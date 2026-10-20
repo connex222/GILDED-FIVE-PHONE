@@ -24,6 +24,7 @@
 }
 :root[data-theme="dark"]{ --felt:#0c4529; --felt-hi:#146a40; --felt-deep:#062a19; --sticky:#08311e; --sticky-sub:#052215; }
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
 html{height:100%;background:var(--felt-deep);scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;height:100%;overflow:hidden;background:var(--felt-deep);color:var(--cream);
   font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -319,6 +320,106 @@ select option{background:#0b3d26;color:#fbf5e6}
 .add-bots{display:flex;gap:6px;margin-top:8px}
 .add-bots .btn{flex:1;margin-top:0;min-height:44px;font-size:.9em;padding:0 4px}
 .add-bots .btn:disabled{opacity:.4}
+/* ---------- house rule cards ---------- */
+.rule-line{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:.15em .5em;max-width:560px;margin:8px auto 0;padding:6px 14px;
+  border-radius:12px;background:rgba(0,0,0,.3);border:1.5px solid var(--gold);cursor:pointer;text-align:center;
+  font-size:clamp(12px,1.35vh + .3vw,24px);line-height:1.3}
+.rule-line .rk{color:var(--gold);font-size:.82em;font-weight:600}
+.rule-line b{color:var(--gold-hi);font-family:Didot,"Bodoni 72",Georgia,serif;font-size:1.12em}
+.rule-line .rt{color:var(--cream-dim);flex-basis:100%}
+.wide .rule-line{margin-top:1.4vh}
+.sc th[scope=row] .pts.house{color:var(--gold-hi);opacity:1;font-weight:800}
+.house-card{position:fixed;inset:0;z-index:32;display:grid;place-items:center;pointer-events:none;perspective:1400px}
+.house-card[hidden]{display:none}
+.house-card .hc{position:relative;width:min(78vw,52vh,520px);aspect-ratio:5/7;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.7em;
+  padding:2.4em 1.9em;border-radius:5%;text-align:center;color:var(--ink);font-size:calc(min(78vw,52vh,520px) * .052);
+  background:radial-gradient(ellipse at 50% 30%,#fffdf5 0%,#f6ecd2 70%,#e8d7ad 100%);
+  border:.3em solid var(--gold);box-shadow:inset 0 0 0 .25em #f6ecd2,inset 0 0 0 .38em var(--gold-lo),0 30px 70px rgba(0,0,0,.7)}
+.house-card.go .hc{animation:dealIn 3.4s cubic-bezier(.2,.8,.2,1) both}
+.house-card .hk{color:var(--gold-lo);font-weight:700;font-size:.72em;letter-spacing:.04em}
+.house-card .hn{font-family:Didot,"Bodoni 72","Bodoni MT","Playfair Display",Georgia,serif;font-weight:700;font-size:2em;line-height:1.02;
+  background:none;color:#7d1a12;filter:none;-webkit-text-fill-color:#7d1a12}
+.house-card .ht{font-size:.95em;line-height:1.35;font-weight:600}
+.house-card .hn::after{content:"";display:block;width:2.2em;height:2px;margin:.35em auto 0;background:var(--gold)}
+.house-card .corner{position:absolute;font-family:Didot,Georgia,serif;font-weight:700;color:#7d1a12;font-size:.85em}
+.house-card .corner.tl{top:5%;left:7%}
+.house-card .corner.br{bottom:5%;right:7%;rotate:180deg}
+@keyframes dealIn{0%{opacity:0;transform:translateY(-60vh) rotateX(50deg) rotateZ(-14deg) scale(.7)}
+  16%{opacity:1;transform:translateY(0) rotateX(0) rotateZ(2deg) scale(1.04)}
+  24%{transform:rotateZ(0) scale(1)}86%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(4vh) scale(.96)}}
+
+/* ---------- help: glowing best box, lucky rolls ---------- */
+.sc td.best{opacity:1;background:rgba(255,216,107,.28);box-shadow:inset 0 0 0 3px var(--gold-hi);animation:bestGlow 1.3s ease-in-out infinite}
+@keyframes bestGlow{50%{background:rgba(255,216,107,.08)}}
+.lucky-count{color:#9fe3a8;font-weight:700}
+.lucky-count:empty{display:none}
+.roll-btn.lucky{background:linear-gradient(180deg,#e6ffe2,#9fe3a8 28%,#3fa35f 64%,#22683b);border-color:#e6ffe2;box-shadow:0 5px 0 #174a29,0 10px 22px rgba(0,0,0,.45)}
+.help-note{font-size:.86em;margin:8px 0 0}
+
+/* ---------- chips: bet line, power moves ---------- */
+.chip-line{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;max-width:560px;margin:6px auto 0;padding:5px 12px;
+  border-radius:12px;background:rgba(0,0,0,.24);border:1px dashed var(--line);font-size:clamp(11px,1.25vh + .25vw,22px);line-height:1.3;text-align:center}
+.chip-line .pot{color:var(--gold-hi);font-weight:700;white-space:nowrap}
+.chip-line .pot b{font-size:1.15em}
+.chip-line .bq{color:var(--cream)}
+.chip-line .bk{color:var(--gold);font-weight:600;margin-right:.4em}
+.chip-line .odds{color:var(--gold);font-size:.88em;white-space:nowrap}
+.chip-line .stakes{display:flex;flex-wrap:wrap;gap:4px 10px;justify-content:center;flex-basis:100%}
+.chip-line .stake{display:inline-flex;align-items:center;gap:4px;color:var(--cream-dim);font-weight:600}
+.chip-line .stake .chip{font-size:.62em}
+.chip-line .closed{color:var(--warn);font-weight:700}
+.wide .chip-line{margin-top:1vh}
+.sc .ph .ck{display:block;color:var(--cream-dim);font-size:.75em;font-weight:600}
+.standings .ck{color:var(--cream-dim);font-size:.85em}
+.powers{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;max-width:560px;margin:10px auto 0}
+.powers .mychips{color:var(--gold-hi);font-weight:800;font-size:clamp(13px,1.5vh + .3vw,26px);margin-right:4px}
+.powers .ask{color:var(--cream);font-weight:600;font-size:clamp(12px,1.4vh + .3vw,24px);text-align:center}
+.pw{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;min-width:78px;padding:2px 12px;border-radius:12px;
+  border:2px solid var(--gold);background:rgba(255,216,107,.12);color:var(--gold-hi);font-weight:700;cursor:pointer;font-size:clamp(13px,1.4vh + .3vw,24px);line-height:1.1}
+.pw small{font-size:.66em;color:var(--cream-dim);font-weight:600}
+.pw:disabled{opacity:.38;cursor:not-allowed}
+.pw.x{border-color:var(--line);background:rgba(0,0,0,.3);color:var(--cream-dim)}
+.pw.tgt{flex-direction:row;gap:6px}
+.pw.tgt .chip{font-size:.6em}
+.die.pick{outline:3px dashed #9fe3a8;outline-offset:calc(var(--d)*.12);animation:pulse 1s ease-in-out infinite}
+.hiroll{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 12px;margin:-4px 0 14px;padding:8px 12px;border-radius:14px;
+  background:rgba(0,0,0,.28);border:2px dashed var(--gold)}
+.hiroll .hr-k{font-family:Didot,"Bodoni 72",Georgia,serif;font-weight:700;color:var(--gold-hi);font-size:1.15em}
+.hiroll .hr-n{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.hiroll .hr-n .chip{font-size:.65em}
+.hiroll .hr-c{color:var(--gold-hi);font-weight:700}
+
+/* ---------- instant replay, teams ---------- */
+.replay-tag{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;translate:-50% 0;z-index:33;display:flex;align-items:center;gap:10px;
+  padding:8px 18px;border-radius:12px;border:2px solid var(--gold-hi);background:rgba(4,24,14,.94);color:var(--gold-hi);cursor:pointer;
+  font-family:Didot,"Bodoni 72",Georgia,serif;font-weight:700;font-size:clamp(16px,2.4vh + .4vw,40px)}
+.replay-tag small{font-family:system-ui,sans-serif;font-size:.5em;color:var(--cream-dim);font-weight:600}
+.replay-tag .rec{width:.55em;height:.55em;border-radius:50%;background:#e0403a;box-shadow:0 0 10px #e0403a;animation:recBlink 1s steps(2) infinite}
+@keyframes recBlink{50%{opacity:.2}}
+.replaying .table-panel{filter:sepia(.35) saturate(.85)}
+.replaying .table-panel::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px 20px rgba(0,0,0,.55)}
+.turn .roller{border-color:var(--cream-dim);color:var(--cream)}
+.teams-box{margin:2px 0 6px 64px}
+.teams-preview{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;color:var(--cream-dim);font-size:.9em}
+.teams-preview b{color:var(--gold)}
+
+/* ---------- awards ---------- */
+.aw-head{text-align:center}
+.awards{display:grid;gap:6px;margin-bottom:14px}
+.award{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:14px;background:rgba(0,0,0,.28);border:1px solid var(--line);
+  animation:awardIn .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * .45s + 1.4s)}
+.award .aw-ic{flex:none;font-size:1.9em;line-height:1}
+.award .aw-tx{min-width:0}
+.award .aw-t{font-family:Didot,"Bodoni 72",Georgia,serif;font-weight:700;color:var(--gold-hi);font-size:1.12em}
+.award .aw-w{color:var(--cream-dim);font-size:.9em;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.award .aw-w b{color:var(--cream)}
+.award .chip{font-size:.62em}
+@keyframes awardIn{0%{opacity:0;translate:0 14px;scale:.96}100%{opacity:1;translate:0 0;scale:1}}
+@media (prefers-reduced-motion: reduce){
+  .house-card.go .hc{animation:fadeHold 2.6s linear both}
+  .sc td.best,.award,.die.pick,.replay-tag .rec{animation:none}
+}
+@keyframes fadeHold{0%{opacity:0}10%{opacity:1}88%{opacity:1}100%{opacity:0}}
 @media (prefers-reduced-motion: reduce){
   .banner .bx,.flash .fx{animation-duration:1.2s}
   .roll-btn.shake svg,.die.suggest,.die.drop{animation:none}
@@ -349,9 +450,11 @@ select option{background:#0b3d26;color:#fbf5e6}
         <span class="chip lg" id="turnChip"></span>
         <div class="who">
           <div class="name foil" id="turnName"></div>
-          <div class="sub"><span id="rollLabel"></span><span class="rolls" id="rollPips" aria-hidden="true"><i></i><i></i><i></i></span><span id="turnBot"></span></div>
+          <div class="sub"><span id="rollLabel"></span><span class="rolls" id="rollPips" aria-hidden="true"><i></i><i></i><i></i></span><span id="turnLucky" class="lucky-count"></span><span id="turnBot"></span></div>
         </div>
       </div>
+      <button class="rule-line" id="ruleLine" type="button" hidden aria-label="Show the house rule card again"></button>
+      <div class="chip-line" id="chipLine" hidden aria-live="polite"></div>
       <div class="tray" id="tray"></div>
       <p class="hint" id="hint" role="status" aria-live="polite"></p>
       <div class="actions">
@@ -367,6 +470,7 @@ select option{background:#0b3d26;color:#fbf5e6}
           <span id="rollText">Roll dice</span>
         </button>
       </div>
+      <div class="powers" id="powers" hidden></div>
       <div class="keys">Space roll &nbsp;·&nbsp; 1–5 hold &nbsp;·&nbsp; arrows choose &nbsp;·&nbsp; Enter score &nbsp;·&nbsp; H hint &nbsp;·&nbsp; U undo</div>
     </section>
     <section class="score-panel" aria-label="Scoreboard">
@@ -390,6 +494,13 @@ select option{background:#0b3d26;color:#fbf5e6}
       <button type="button" data-mode="triple">Triple Gilded</button>
     </div>
     <p class="muted" id="modeInfo"></p>
+    <label class="toggle"><input type="checkbox" id="optChips"><span class="sw"></span><span>Chips, side bets and jackpot<small>Everyone gets 10 chips. Bet on other players' turns from your phone, spend chips on power moves, and roll a Gilded Five to win the jackpot</small></span></label>
+    <label class="toggle"><input type="checkbox" id="optTeams"><span class="sw"></span><span>Teams of two<small>Partners share one scorecard and take turns to roll. Great for pairing a youngster with a grown-up</small></span></label>
+    <div class="teams-box" id="teamsBox" hidden>
+      <p class="teams-preview" id="teamsPreview"></p>
+      <button class="link-btn" id="btnShuffleTeams" type="button">Shuffle teams</button>
+    </div>
+    <label class="toggle"><input type="checkbox" id="optHouse"><span class="sw"></span><span>House rule cards<small>A new twist is dealt at the start of every round, like Lucky Sevens or Hot Hand</small></span></label>
     <div id="phonesBox" hidden>
       <h3>Phones</h3>
       <label class="toggle"><input type="checkbox" id="optPhones"><span class="sw"></span><span>Play with phones<small>Everyone rolls and scores on their own phone. This screen is the table.</small></span></label>
@@ -406,6 +517,7 @@ select option{background:#0b3d26;color:#fbf5e6}
         <p class="muted" id="phonesNote" style="text-align:center;margin:0 0 8px"></p>
         <h3>Players <span class="muted">— tap a chip to change colour</span></h3>
         <div class="seats" id="phoneSeats"></div>
+        <p class="muted help-note">Set younger players to <b>Learner</b> or <b>Junior</b> for a helping hand.</p>
         <div class="add-bots" id="addBots"></div>
       </div>
     </div>
@@ -418,12 +530,14 @@ select option{background:#0b3d26;color:#fbf5e6}
     </div>
     <h3>Seats <span class="muted">— tap a chip to change colour</span></h3>
     <div class="seats" id="seats"></div>
+    <p class="muted help-note"><b>Learner</b>: the best box glows and they get 1 lucky roll. <b>Junior</b>: 2 lucky rolls and a 25-point head start as well.</p>
     </div>
     <div class="opts">
       <label class="toggle"><input type="checkbox" id="optSound"><span class="sw"></span><span>Sound effects</span></label>
       <label class="toggle"><input type="checkbox" id="optVoice"><span class="sw"></span><span>Announcer<small>Calls out turns, big rolls and the winner</small></span></label>
       <label class="toggle"><input type="checkbox" id="optAmb"><span class="sw"></span><span>Casino ambience<small>Quiet background chatter and chips</small></span></label>
       <label class="toggle"><input type="checkbox" id="optTV"><span class="sw"></span><span>TV mode<small>Big landscape layout, full screen, screen stays awake</small></span></label>
+      <label class="toggle"><input type="checkbox" id="optReplay"><span class="sw"></span><span>Gilded Five replays<small>Every Gilded Five is shown again in slow motion. Tap the replay sign to skip</small></span></label>
       <label class="toggle"><input type="checkbox" id="optQuick"><span class="sw"></span><span>Quick rolls<small>Shorter dice animation and faster computer players</small></span></label>
     </div>
     <button class="btn" id="btnStart" type="button">Deal me in</button>
@@ -551,6 +665,20 @@ select option{background:#0b3d26;color:#fbf5e6}
     <p>If you already scored 50 for a Gilded Five and roll another, you get <b>+100</b>. You must then use the matching top box (e.g. five 4s → Fours) if it's open. If that's taken, any bottom box scores full points. If those are all taken, you must scratch a top box.</p>
     <h3>Triple Gilded</h3>
     <p>Every player gets three score columns, worth <b>×1, ×2 and ×3</b>. You choose which column to use each turn, so the game lasts 39 rounds. Bonuses count per column and are multiplied too.</p>
+    <h3>House rule cards</h3>
+    <p>With this switched on, a gold card is dealt at the start of each round and changes one rule for everyone: <b>Lucky Sevens</b> (1s count as 7), <b>Double Down</b> (Chance doubles), <b>Hot Hand</b> (4 rolls), <b>Tight Table</b> (2 rolls), <b>Full House Party</b> (Full House 40), <b>Straight Shooter</b> (straights +10), <b>Underdog</b> (lowest score that round gets +15) and <b>Safety Net</b> (a scratch still earns 5). Points earned under a card stay on the scorecard. Bonus points go in the <b>Extras</b> row.</p>
+    <h3>Learner and Junior seats</h3>
+    <p>Pick these instead of <b>Person</b> to give someone a helping hand. The best box to score in <b>glows</b> after every roll. A <b>lucky roll</b> is an extra roll they can use once their normal rolls run out (Learner 1, Junior 2). Juniors also start with <b>25 points</b>. In Triple Gilded the lucky rolls and head start are three times bigger, to match the longer game.</p>
+    <h3>Chips, side bets and the jackpot</h3>
+    <p>Everyone starts with <b>10 chips</b>. Chips are separate from your score. While someone else rolls, a <b>side bet</b> appears on your phone, such as "Will Dad score more than 20 points?". Stake 1 to 3 chips on Yes or No. Bets close when the second roll starts (or at the first roll for a Gilded Five bet). Winners get their stake back multiplied by the odds shown. Lost chips go into the <b>jackpot</b>, which also grows by one chip every round. Roll a <b>Gilded Five</b> to win the lot. Whoever ends with the most chips is the <b>High Roller</b>.</p>
+    <h3>Power moves</h3>
+    <p>On your turn, after rolling, you can spend chips: <b>Re-roll</b> one die without using a roll (2 chips), <b>Nudge</b> a die up or down by one (3 chips), or <b>Freeze</b> another player so they get one roll fewer next turn (4 chips).</p>
+    <h3>Teams of two</h3>
+    <p>Partners share one scorecard and take turns to roll: one partner plays this turn, the other plays the next. Teams are made from neighbours in the player list (1 + 2, 3 + 4 and so on). Press <b>Shuffle teams</b> to mix them up. A team can include a computer player. Lucky rolls and head starts from Learner and Junior partners are pooled, and the team shares one chip stack.</p>
+    <h3>Replays and shake to roll</h3>
+    <p>Every Gilded Five is shown again in slow motion. On phones, tap <b>Shake</b> at the top and you can roll by shaking your phone. Phones only allow this on a secure (https) address, so it works on the online version but not over home Wi-Fi.</p>
+    <h3>Awards</h3>
+    <p>At the end everyone gets an award, from <b>Gilded Touch</b> and <b>Comeback Kid</b> to <b>Clean Sheet</b> and <b>Hint Hunter</b>. They are read out from last place up to the winner.</p>
     <h3>Computer players</h3>
     <p>Set any seat to <b>Easy</b>, <b>Medium</b> or <b>Hard</b> bot. Easy plays on instinct, Medium thinks one roll ahead, Hard works out the odds of every hold.</p>
     <button class="btn" type="button" data-close="rules">Back</button>
@@ -563,6 +691,8 @@ select option{background:#0b3d26;color:#fbf5e6}
 </div>
 
 <div class="banner" id="banner" hidden></div>
+<div class="house-card" id="houseCard" hidden></div>
+<button class="replay-tag" id="replayTag" type="button" hidden><span class="rec" aria-hidden="true"></span>Instant replay<small>Tap to skip</small></button>
 <div class="flash" id="flash" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
@@ -618,17 +748,36 @@ function sum(d) { return d.reduce((a, b) => a + b, 0); }
 function isFive(d) { return d.every(v => v === d[0]); }
 function hasRun(c, len) { let run = 0; for (let f = 1; f <= 6; f++) { run = c[f] ? run + 1 : 0; if (run >= len) return true; } return false; }
 
+/* House rule in play this round. The table sets it; phones mirror it from the game state. */
+let HOUSE = null;
+function setHouse(r) { HOUSE = r || null; }
+const pipVal = f => (HOUSE === 'sevens' && f === 1 ? 7 : f);
+function fixedPts(id) {
+  if (id === 'full') return HOUSE === 'party' ? 40 : 25;
+  if (id === 'smS') return HOUSE === 'straight' ? 40 : 30;
+  if (id === 'lgS') return HOUSE === 'straight' ? 50 : 40;
+  return 0;
+}
+function ptsLabel(id) {
+  if (id === 'ones' && HOUSE === 'sevens') return '1=7';
+  if (id === 'chance' && HOUSE === 'double') return 'Σ×2';
+  if (id === 'full' || id === 'smS' || id === 'lgS') return String(fixedPts(id));
+  return CAT[id].pts;
+}
+/* Rolls allowed this turn: 3, changed by Hot Hand / Tight Table, plus any lucky rolls used */
+function rollLimit(st) { let n = 3; if (st.rule === 'hot') n++; else if (st.rule === 'tight') n--; return Math.max(1, n + (st.extra || 0)); }
+
 function rawScore(id, d, joker) {
-  const c = counts(d), s = sum(d), cat = CAT[id];
-  if (cat.sec === 'up') return c[cat.face] * cat.face;
+  const c = counts(d), s = d.reduce((a, v) => a + pipVal(v), 0), cat = CAT[id];
+  if (cat.sec === 'up') return c[cat.face] * pipVal(cat.face);
   switch (id) {
     case 'threeK': return c.some(n => n >= 3) ? s : 0;
     case 'fourK':  return c.some(n => n >= 4) ? s : 0;
-    case 'full':   return (joker || (c.includes(3) && c.includes(2))) ? 25 : 0;
-    case 'smS':    return (joker || hasRun(c, 4)) ? 30 : 0;
-    case 'lgS':    return (joker || hasRun(c, 5)) ? 40 : 0;
+    case 'full':   return (joker || (c.includes(3) && c.includes(2))) ? fixedPts('full') : 0;
+    case 'smS':    return (joker || hasRun(c, 4)) ? fixedPts('smS') : 0;
+    case 'lgS':    return (joker || hasRun(c, 5)) ? fixedPts('lgS') : 0;
     case 'yahtzee':return isFive(d) ? 50 : 0;
-    case 'chance': return s;
+    case 'chance': return HOUSE === 'double' ? s * 2 : s;
   }
   return 0;
 }
@@ -664,7 +813,8 @@ function cardTotals(card) {
 }
 function totals(p) {
   const cols = p.cards.map((card, c) => { const t = cardTotals(card); const mult = multOf(p, c); return Object.assign(t, { mult, scored: t.total * mult }); });
-  return { cols, grand: cols.reduce((a, t) => a + t.scored, 0) };
+  const xp = p.xp || 0;  // head start + house-rule extras, never multiplied
+  return { cols, xp, grand: cols.reduce((a, t) => a + t.scored, 0) + xp };
 }
 /*RULES-END*/
 
@@ -774,19 +924,49 @@ const store = {
   del(k) { try { localStorage.removeItem(k); } catch (e) {} }
 };
 const prefs = Object.assign({ sound: true, fxVol: 0.9, ambOn: false, ambVol: 0.45, voiceOn: true, voiceVol: 1, voiceName: '',
-  tv: false, quick: false, mode: 'classic', count: 2, seats: [], phones: false, phoneBots: [] }, store.get(K_PREFS, {}));
-for (let i = 0; i < 8; i++) prefs.seats[i] = Object.assign({ name: '', color: i, type: 'human' }, prefs.seats[i] || {});
+  tv: false, quick: false, mode: 'classic', count: 2, seats: [], phones: false, phoneBots: [], house: true, chips: true, teams: false, replay: true, phoneHelp: {} }, store.get(K_PREFS, {}));
+for (let i = 0; i < 8; i++) prefs.seats[i] = Object.assign({ name: '', color: i, type: 'human', help: 'std' }, prefs.seats[i] || {});
+if (!prefs.phoneHelp || typeof prefs.phoneHelp !== 'object') prefs.phoneHelp = {};
 const savePrefs = () => store.set(K_PREFS, prefs);
 let profiles = store.get(K_PROF, []);
 
 let S = null;  // game state (persisted)
 let phoneCall = false;
 const ui = { rolling: false, undo: null, undoBy: null, pendingZero: null, cursor: null, lastScored: null, say: [], suggest: null,
-  tx: [0,0,0,0,0], ty: [0,0,0,0,0] };
+  best: null, reveal: false, spoken: false, power: null, replaying: false, lastThrow: null, tx: [0,0,0,0,0], ty: [0,0,0,0,0] };
 const save = () => { if (S) store.set(K_GAME, S); };
 const BOT_NAMES = { easy: 'Lady Luck', medium: 'The Croupier', hard: 'The Shark' };
 const BOT_LABEL = { easy: 'Easy bot', medium: 'Medium bot', hard: 'Hard bot' };
 const isBot = p => !!p && p.type && p.type !== 'human';
+
+/* House rule cards: one is dealt at the start of every round when the option is on */
+const HOUSE_RULES = [
+  { id: 'sevens',   name: 'Lucky Sevens',     text: 'Every 1 counts as 7 in Aces, 3 and 4 of a Kind, and Chance.', say: 'Lucky sevens. Every one counts as seven this round.' },
+  { id: 'double',   name: 'Double Down',      text: 'Chance scores double this round.', say: 'Double down. Chance scores double this round.' },
+  { id: 'hot',      name: 'Hot Hand',         text: 'Everyone gets 4 rolls this round.', say: 'Hot hand. Everyone gets four rolls this round.' },
+  { id: 'tight',    name: 'Tight Table',      text: 'Only 2 rolls each this round.', say: 'Tight table. Only two rolls each this round.' },
+  { id: 'party',    name: 'Full House Party', text: 'Full House scores 40 instead of 25.', say: 'Full house party. A full house scores forty.' },
+  { id: 'straight', name: 'Straight Shooter', text: 'Small Straight scores 40 and Large Straight 50.', say: 'Straight shooter. Straights are worth ten more.' },
+  { id: 'underdog', name: 'Underdog',         text: 'Whoever scores least this round gets 15 bonus points.', say: 'Underdog round. The lowest score this round earns fifteen bonus points.', multi: true },
+  { id: 'net',      name: 'Safety Net',       text: 'Scratching a box still earns you 5 points.', say: 'Safety net. Scratch a box and you still get five points.' }
+];
+const RULE = Object.fromEntries(HOUSE_RULES.map(r => [r.id, r]));
+
+/* Help levels for younger or newer players. Lucky rolls and head start double in Triple Gilded. */
+const HELP = {
+  std:     { label: 'Person',  tokens: 0, head: 0,  glow: false },
+  learner: { label: 'Learner', tokens: 1, head: 0,  glow: true },
+  junior:  { label: 'Junior',  tokens: 2, head: 25, glow: true }
+};
+const helpOf = p => (!p || isBot(p)) ? HELP.std : (HELP[p.help] || HELP.std);
+
+/* Chips: everyone starts with a stack, separate from the score */
+const START_CHIPS = 10, POT_SEED = 5;
+const POWERS = {
+  reroll: { name: 'Re-roll a die', short: 'Re-roll', cost: 2, ask: 'Tap a die to re-roll it (does not use a roll)' },
+  nudge:  { name: 'Nudge a die',   short: 'Nudge',   cost: 3, ask: 'Tap a die, then nudge it up or down by one' },
+  freeze: { name: 'Freeze',        short: 'Freeze',  cost: 4, ask: 'Pick who loses a roll on their next turn' }
+};
 
 /* ================= SOUND (all synthesised, no files) ================= */
 const Sound = (() => {
@@ -1051,6 +1231,14 @@ const Sound = (() => {
     },
     bonus() { if (!ready()) return; const t = now(); bell(t, 1318.5, 1); bell(t + 0.13, 1760, 1); },
     hintChime() { if (!ready()) return; const t = now(); bell(t, 1760, 0.45); bell(t + 0.08, 2349, 0.35); },
+    card() {
+      if (!ready()) return; const t = now();
+      hit(t, { freq: 1100, to: 4200, q: 0.7, a: 0.02, d: 0.11, gain: 0.16 });
+      hit(t + 0.13, { type: 'lowpass', freq: 900, d: 0.04, gain: 0.3 });
+      bell(t + 0.22, 1568, 0.55); bell(t + 0.32, 2093, 0.5); bell(t + 0.42, 2637, 0.4);
+    },
+    freeze() { if (!ready()) return; const t = now(); [2637, 3136, 3951, 4699].forEach((f, i) => bell(t + i * 0.05, f, 0.35)); hit(t, { type: 'highpass', freq: 5000, a: 0.05, d: 0.5, gain: 0.08 }); },
+    lucky() { if (!ready()) return; const t = now(); [1318.5, 1568, 1975.5].forEach((f, i) => bell(t + i * 0.06, f, 0.6)); for (let i = 0; i < 6; i++) coin(t + 0.1 + Math.random() * 0.5, 0.7, rnd(-0.5, 0.5)); },
     turn() { if (!ready()) return; const t = now(); hit(t, { freq: 450, to: 1700, q: 0.8, a: 0.08, d: 0.18, gain: 0.05 }); chip(t + 0.2, 0.45, 0); },
     jackpot() {
       if (!ready()) return; const t = now();
@@ -1157,8 +1345,8 @@ function buildDice() {
   }
   dieEls = $$('.die', tray);
 }
-function orient(i, dur, delay) {
-  const cube = dieEls[i].querySelector('.cube'), [rx, ry] = SHOW[S.dice[i]];
+function orient(i, dur, delay, face) {
+  const cube = dieEls[i].querySelector('.cube'), [rx, ry] = SHOW[face || S.dice[i]];
   cube.style.setProperty('--dur', dur + 'ms'); cube.style.setProperty('--delay', delay + 'ms');
   cube.style.transform = `rotateX(${rx + 360 * ui.tx[i]}deg) rotateY(${ry + 360 * ui.ty[i]}deg)`;
 }
@@ -1171,8 +1359,10 @@ const maxRounds = () => 13 * S.ncols;
 const tvMayAct = () => { const p = S && S.players[S.current]; return !p || !p.sid || !Phones.isOn(p.sid); };
 const tvBlocked = () => { if (phoneCall || tvMayAct()) return false; toast(`${cur().name} is playing on their phone`); return true; };
 const botTurnNow = () => !!S && S.phase === 'play' && isBot(cur());
+/* a player may take a lucky roll once their normal rolls are used up */
+const canLucky = p => !!S && S.phase === 'play' && !isBot(p) && (p.tokens || 0) > 0 && S.rollNum > 0 && S.rollNum >= rollLimit(S);
 
-function renderAll() { if (!S) return; document.documentElement.classList.toggle('triple', S.mode === 'triple'); renderTop(); renderTurn(); renderDice(); renderTable(); }
+function renderAll() { if (!S) return; setHouse(S.rule); document.documentElement.classList.toggle('triple', S.mode === 'triple'); renderTop(); renderTurn(); renderDice(); renderTable(); }
 function renderTop() {
   $('#roundLabel').textContent = S.phase === 'play' ? `Round ${S.round} of ${maxRounds()}` : 'Final scores';
   $('#btnUndo').hidden = !ui.undo;
@@ -1182,19 +1372,28 @@ function renderTurn() {
   const p = cur(), bot = isBot(p), onPhone = !bot && !!p.sid && Phones.isOn(p.sid);
   const chip = $('#turnChip'); chip.className = `chip lg c${p.color}`; chip.textContent = initial(p.name);
   $('#turnName').textContent = p.name;
-  $('#turnBot').innerHTML = bot ? `<span class="bot">${BOT_LABEL[p.type]}</span>` : p.sid ? `<span class="bot">${onPhone ? 'Phone' : 'Phone offline'}</span>` : '';
-  $('#rollLabel').textContent = S.phase !== 'play' ? 'Game over' : S.rollNum === 0 ? 'Ready to roll' : `Roll ${S.rollNum} of 3`;
+  $('#turnBot').innerHTML = (p.team ? `<span class="bot roller">${esc(roller(p))} rolls</span> ` : '') +
+    (bot ? `<span class="bot">${BOT_LABEL[p.type]}</span>` : p.sid ? `<span class="bot">${onPhone ? 'Phone' : 'Phone offline'}</span>` : '');
+  const lim = rollLimit(S), lucky = canLucky(p), helped = helpOf(p).glow;
+  $('#rollLabel').textContent = S.phase !== 'play' ? 'Game over' : S.rollNum === 0 ? 'Ready to roll' : `Roll ${S.rollNum} of ${lim}`;
+  const pipBox = $('#rollPips'); if (pipBox.children.length !== lim) pipBox.innerHTML = '<i></i>'.repeat(lim);
   $$('#rollPips i').forEach((el, k) => el.classList.toggle('used', k < S.rollNum));
-  rollBtn.disabled = !(S.phase === 'play' && !ui.rolling && S.rollNum < 3 && !bot && !onPhone);
+  $('#turnLucky').textContent = !bot && S.phase === 'play' && (p.tokens || 0) > 0 ? `🍀 ${p.tokens} lucky roll${p.tokens === 1 ? '' : 's'}` : '';
+  rollBtn.disabled = !(S.phase === 'play' && !ui.rolling && !ui.replaying && (S.rollNum < lim || lucky) && !bot && !onPhone);
+  rollBtn.classList.toggle('lucky', lucky && !onPhone);
   $('#rollText').textContent = (bot || onPhone) && S.phase === 'play' ? `${p.name} is playing` : ui.rolling ? 'Rolling…' :
-    S.rollNum === 0 ? 'Roll dice' : S.rollNum < 3 ? 'Roll again' : 'Pick a score';
+    S.rollNum === 0 ? 'Roll dice' : S.rollNum < lim ? 'Roll again' : lucky ? `Lucky roll (${p.tokens} left)` : 'Pick a score';
+  const rl = $('#ruleLine'), rule = S.phase === 'play' && S.rule && RULE[S.rule];
+  rl.hidden = !rule;
+  if (rule) rl.innerHTML = `<span class="rk">House rule</span><b>${esc(rule.name)}</b><span class="rt">${esc(rule.text)}</span>`;
+  renderChips(); renderPowers();
   hintBtn.disabled = !(S.phase === 'play' && !ui.rolling && !bot && !onPhone && S.rollNum > 0);
   const hint = $('#hint'); let txt = '', alert = false;
   if (S.phase !== 'play') txt = 'Game over';
   else if (ui.suggest) { txt = ui.suggest.text; alert = true; }
   else if (ui.rolling) txt = '';
   else if (bot) txt = S.rollNum === 0 ? `${p.name} is picking up the cup…` : `${p.name} is thinking…`;
-  else if (onPhone) txt = S.rollNum === 0 ? `${p.name}, roll on your phone` : S.rollNum < 3 ? `${p.name} is holding and rolling on their phone…` : `${p.name} is choosing a score…`;
+  else if (onPhone) txt = S.rollNum === 0 ? `${roller(p)}, roll on your phone` : S.rollNum < lim ? `${roller(p)} is holding and rolling on their phone…` : `${roller(p)} is choosing a score…`;
   else if (S.rollNum === 0) txt = 'Tap the gold cup to roll';
   else if (isFive(S.dice) && p.cards.some(card => card.s.yahtzee != null)) {
     const opts = playerOptions(p, S.dice);
@@ -1205,7 +1404,8 @@ function renderTurn() {
       txt += forced.allowed.size === 1 && forced.allowed.has(up.id) ? `Joker rule: you must score this in ${up.label}`
         : forced.joker ? 'Joker! Any bottom box scores full points' : 'Joker rule: scratch an open top box';
     } else txt += 'Tap a gold number to score';
-  } else txt = S.rollNum < 3 ? 'Tap dice to hold · tap a gold number to score' : 'No rolls left — tap a gold number to score';
+  } else if (helped && ui.best) txt = (S.rollNum < lim || lucky ? 'Tap dice to hold · ' : '') + 'the glowing box is the best pick';
+  else txt = S.rollNum < lim ? 'Tap dice to hold · tap a gold number to score' : lucky ? 'Use a lucky roll, or tap a gold number to score' : 'No rolls left — tap a gold number to score';
   hint.textContent = txt; hint.classList.toggle('alert', alert);
 }
 function renderDice() {
@@ -1225,7 +1425,7 @@ function renderStandings() {
   const box = $('#standings');
   if (S.mode !== 'triple') { box.innerHTML = ''; return; }
   box.innerHTML = S.players.map((p, i) =>
-    `<span class="stand${S.phase === 'play' && i === S.current ? ' act' : ''}"><span class="chip c${p.color}">${esc(initial(p.name))}</span>${esc(p.name)} <b>${totals(p).grand}</b></span>`).join('');
+    `<span class="stand${S.phase === 'play' && i === S.current ? ' act' : ''}"><span class="chip c${p.color}">${esc(initial(p.name))}</span>${esc(p.name)} <b>${totals(p).grand}</b>${S.chipsOn ? ` <span class="ck">🪙${p.chips || 0}</span>` : ''}</span>`).join('');
 }
 function renderTable() {
   Phones.queue();
@@ -1243,11 +1443,12 @@ function renderTable() {
     h += triple
       ? `<th scope="col" class="${actCls(col).trim()}"><div class="ph"><span class="mult">×${col.c + 1}</span><span class="pt">${T[col.pi].cols[col.c].scored}</span></div></th>`
       : `<th scope="col" class="${actCls(col).trim()}"><div class="ph"><span class="chip c${p.color}">${esc(initial(p.name))}</span>` +
-        `<span class="pn">${esc(p.name)}</span><span class="pt">${T[col.pi].grand}</span></div></th>`;
+        `<span class="pn">${esc(p.name)}</span><span class="pt">${T[col.pi].grand}</span>${S.chipsOn ? `<span class="ck">🪙${p.chips || 0}</span>` : ''}</div></th>`;
   });
   h += '</tr></thead><tbody>';
   const catRow = c => {
-    let r = `<tr><th scope="row"><span class="lab"><span>${c.label}</span><span class="pts">${c.pts}</span></span></th>`;
+    const lbl = ptsLabel(c.id), changed = lbl !== c.pts;
+    let r = `<tr><th scope="row"><span class="lab"><span>${c.label}</span><span class="pts${changed ? ' house' : ''}">${lbl}</span></span></th>`;
     cols.forEach(col => {
       const card = P[col.pi].cards[col.c], v = card.s[c.id], key = col.c + ':' + c.id;
       let cls = actCls(col), body = '', attrs = '';
@@ -1259,7 +1460,7 @@ function renderTable() {
         const o = omap.get(key);
         if (o) {
           const confirm = ui.pendingZero === key;
-          cls += ' ghost' + (o.val === 0 ? ' g0' : '') + (confirm ? ' confirm' : '') + (ui.cursor === key ? ' cursor' : '');
+          cls += ' ghost' + (o.val === 0 ? ' g0' : '') + (confirm ? ' confirm' : '') + (ui.cursor === key ? ' cursor' : '') + (ui.best === key ? ' best' : '');
           body = confirm ? '0?' : o.val;
           if (humanTurn) attrs = ` data-key="${key}" role="button" tabindex="0" aria-label="Score ${o.val} in ${c.label}${triple ? ' column ' + (col.c + 1) : ''}"`;
         } else cls += ' blocked';
@@ -1281,6 +1482,12 @@ function renderTable() {
   h += '<tr class="sub"><th scope="row"><span class="lab"><span>Gilded bonus</span><span class="pts">100</span></span></th>';
   cols.forEach(col => { const t = T[col.pi].cols[col.c]; h += `<td class="${(t.yb ? 'earned' : '') + actCls(col)}">${t.yb ? '+' + t.yb : '·'}</td>`; });
   h += '</tr>';
+  if (S.houseOn || T.some(t => t.xp)) {
+    h += '<tr class="sub"><th scope="row"><span class="lab"><span>Extras</span><span class="pts">head start · house</span></span></th>';
+    if (triple) h += `<td colspan="3" class="${T[ci].xp ? 'earned' : ''}">${T[ci].xp ? '+' + T[ci].xp : '·'}</td>`;
+    else cols.forEach(col => { const x = T[col.pi].xp; h += `<td class="${(x ? 'earned' : '') + actCls(col)}">${x ? '+' + x : '·'}</td>`; });
+    h += '</tr>';
+  }
   if (triple) {
     h += '<tr class="sub"><th scope="row">Column total</th>';
     cols.forEach(col => h += `<td class="${actCls(col).trim()}">${T[col.pi].cols[col.c].total}</td>`);
@@ -1322,19 +1529,38 @@ function turnLine() {
       else parts.push(`${leaders[0].name} leads by ${top - Math.max(...T.filter(v => v !== top))}.`);
     }
   }
-  if (n > 1) parts.push(isBot(p) ? pickOne([`${p.name} steps up.`, `${p.name} takes the cup.`])
+  if (p.team) parts.push(pickOne([`${roller(p)} rolls for ${spoken(p.name)}.`, `Over to ${roller(p)}, for ${spoken(p.name)}.`]));
+  else if (n > 1) parts.push(isBot(p) ? pickOne([`${p.name} steps up.`, `${p.name} takes the cup.`])
     : pickOne([`${p.name}, you're up.`, `Over to you, ${p.name}.`, `${p.name}, the table is yours.`]));
   return parts.join(' ');
 }
 let bannerT = 0;
 function showBanner() {
+  if (ui.reveal && S.rule && RULE[S.rule]) { ui.reveal = false; revealRule(true); return; }
   const p = cur(), b = $('#banner'), solo = S.players.length === 1;
   b.innerHTML = `<div class="bx"><span class="chip lg c${p.color}">${esc(initial(p.name))}</span>` +
-    `<div class="bn foil">${solo ? `Round ${S.round}` : esc(p.name)}</div><div class="br">${solo ? `of ${maxRounds()}` : `Round ${S.round} of ${maxRounds()}`}</div></div>`;
+    `<div class="bn foil">${solo ? `Round ${S.round}` : esc(p.name)}</div><div class="br">${p.team ? `${esc(roller(p))} rolls · ` : ''}${solo ? `of ${maxRounds()}` : `Round ${S.round} of ${maxRounds()}`}${S.extra < 0 ? ' · ❄ frozen, one roll fewer' : ''}</div></div>`;
   b.hidden = false; Sound.turn();
-  Voice.say([...ui.say, turnLine()].join(' ')); ui.say = [];
+  if (ui.spoken) ui.spoken = false; else Voice.say([...ui.say, turnLine()].join(' '));
+  ui.say = [];
   clearTimeout(bannerT); bannerT = setTimeout(() => { b.hidden = true; }, reduceMotion ? 1200 : 1500);
+  scheduleBotBets();
   if (isBot(p)) runBot();
+}
+/* deal the house card onto the table; then the normal turn banner follows */
+let ruleT = 0;
+function revealRule(thenBanner) {
+  const r = RULE[S.rule]; if (!r) return;
+  const el = $('#houseCard');
+  el.innerHTML = `<div class="hc" role="img" aria-label="House rule: ${esc(r.name)}. ${esc(r.text)}">` +
+    `<span class="corner tl">G5</span><span class="corner br">G5</span>` +
+    `<div class="hk">House rule · round ${S.round}</div><div class="hn">${esc(r.name)}</div><div class="ht">${esc(r.text)}</div></div>`;
+  el.hidden = false; el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+  Sound.card(); vibrate(20);
+  if (thenBanner) { Voice.say([...ui.say, 'New house rule. ' + r.say, turnLine()].join(' ')); ui.say = []; ui.spoken = true; }
+  else Voice.say(r.say);
+  clearTimeout(ruleT);
+  ruleT = setTimeout(() => { el.hidden = true; if (thenBanner && S && S.phase === 'play') showBanner(); }, reduceMotion ? 2600 : 3400);
 }
 let flashT = 0;
 function flash(title, sub) {
@@ -1345,29 +1571,82 @@ function flash(title, sub) {
 
 /* ================= game flow ================= */
 function blankCard() { return { s: Object.fromEntries(CATS.map(c => [c.id, null])), yb: 0 }; }
-function newGame(seats, mode) {
+function newGame(seats, mode, houseOn, teams) {
   const ncols = mode === 'triple' ? 3 : 1;
+  const mk = s => {
+    const help = s.type === 'human' && HELP[s.help] ? s.help : 'std', h = HELP[help];
+    return { name: s.name, color: s.color, type: s.type, sid: s.sid || null, help, gf: 0,
+      tokens: h.tokens * ncols, xp: h.head * ncols, chips: START_CHIPS, cards: Array.from({ length: ncols }, blankCard) };
+  };
+  let players = seats.map(mk);
+  /* teams of two: neighbours in the list share one scorecard and take turns to roll */
+  if (teams && seats.length >= 2) {
+    const grouped = [];
+    for (let i = 0; i < players.length; i += 2) {
+      const g = players.slice(i, i + 2);
+      if (g.length === 1) { grouped.push(g[0]); continue; }
+      const a = g[0];
+      grouped.push({ name: g.map(m => m.name).join(' & '), color: a.color, team: g.map(m => ({ name: m.name, color: m.color, type: m.type, sid: m.sid, help: m.help })),
+        tm: 0, turnsTaken: 0, type: a.type, sid: a.sid, help: a.help, gf: 0,
+        tokens: g.reduce((x, m) => x + m.tokens, 0), xp: g.reduce((x, m) => x + m.xp, 0), chips: START_CHIPS,
+        cards: Array.from({ length: ncols }, blankCard) });
+    }
+    players = grouped;
+  }
   return {
-    v: 2, id: uid(), mode, ncols, phase: 'play', round: 1, current: 0, rollNum: 0,
+    v: 2, id: uid(), mode, ncols, phase: 'play', round: 1, current: 0, rollNum: 0, extra: 0,
+    houseOn: !!houseOn, rule: null, bag: [], awards: null,
+    chipsOn: !!prefs.chips, pot: POT_SEED, bet: null, frozen: {}, turnFive: false,
+    teams: !!teams && players.some(p => p.team),
     dice: [d6(), d6(), d6(), d6(), d6()], held: [false, false, false, false, false],
-    players: seats.map(s => ({ name: s.name, color: s.color, type: s.type, sid: s.sid || null, gf: 0, cards: Array.from({ length: ncols }, blankCard) }))
+    players
   };
 }
-function resetUi() { Object.assign(ui, { rolling: false, undo: null, undoBy: null, pendingZero: null, cursor: null, lastScored: null, say: [], suggest: null }); }
-function startGame(seats, mode) {
+/* on a team's turn, the partner whose go it is takes the controls */
+function startTurn() {
+  const p = cur(); if (!p.team) return;
+  p.tm = (p.turnsTaken || 0) % p.team.length;
+  const m = p.team[p.tm]; p.sid = m.sid || null; p.type = m.type; p.help = m.help;
+}
+const roller = p => p.team ? p.team[p.tm || 0].name : p.name;
+const spoken = s => String(s).replace(/ & /g, ' and ');
+const holdsSid = (p, id) => !!id && (p.sid === id || !!(p.team && p.team.some(m => m.sid === id)));
+const membersOf = p => p.team ? p.team.map(m => ({ name: m.name, color: m.color, type: m.type, sid: m.sid, help: m.help })) : [seatOf(p)];
+/* deal the next house card from a shuffled bag, never the same card twice in a row */
+function drawRule() {
+  if (!S.houseOn) { S.rule = null; setHouse(null); return; }
+  if (!Array.isArray(S.bag) || !S.bag.length) {
+    const ids = HOUSE_RULES.filter(r => !r.multi || S.players.length > 1).map(r => r.id);
+    for (let i = ids.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+    if (ids.length > 1 && ids[ids.length - 1] === S.rule) [ids[0], ids[ids.length - 1]] = [ids[ids.length - 1], ids[0]];
+    S.bag = ids;
+  }
+  S.rule = S.bag.pop(); setHouse(S.rule); ui.reveal = true;
+}
+const seatOf = p => ({ name: p.name, color: p.color, type: p.type, sid: p.sid, help: p.help });
+function resetUi() { Object.assign(ui, { rolling: false, undo: null, undoBy: null, pendingZero: null, cursor: null, lastScored: null, say: [], suggest: null, best: null, reveal: false, spoken: false, power: null, replaying: false, lastThrow: null }); }
+function startGame(seats, mode, teams = prefs.teams) {
   botToken++;
-  S = newGame(seats, mode); resetUi();
+  S = newGame(seats, mode, prefs.house, teams); resetUi(); drawRule(); startTurn(); openBet();
   save(); ['setup', 'results', 'menu', 'records'].forEach(closeOv);
   renderAll(); syncDiceInstant(); showBanner(); requestWake();
 }
 
 async function roll(fromBot) {
-  if (!S || S.phase !== 'play' || ui.rolling) return;
+  if (!S || S.phase !== 'play' || ui.rolling || ui.replaying) return;
   if (!fromBot && (botTurnNow() || tvBlocked())) return;
-  if (S.rollNum >= 3) { toast('No rolls left — tap a gold number to score'); return; }
+  const roller = cur(), useLucky = S.rollNum >= rollLimit(S);
+  if (useLucky && !canLucky(roller)) { toast('No rolls left — tap a gold number to score'); return; }
   const idx = [0, 1, 2, 3, 4].filter(i => !S.held[i]);
   if (!idx.length) { toast('All five dice are held — release one, or pick a score'); Sound.ui(); return; }
   Sound.unlock();
+  if (useLucky) {
+    roller.tokens--; S.extra = (S.extra || 0) + 1; roller.lucky = (roller.lucky || 0) + 1;
+    Sound.lucky(); toast(`🍀 Lucky roll! ${roller.tokens ? roller.tokens + ' left' : 'That was the last one'}`);
+    Voice.say(pickOne([`Lucky roll for ${roller.name}!`, `${roller.name} plays a lucky roll!`]));
+  }
+  ui.best = null; ui.power = null;
+  if (S.bet && S.bet.open && (S.rollNum >= 1 || S.bet.k === 'five')) S.bet.open = false;
   if (!fromBot) ui.undo = null;
   ui.pendingZero = null; ui.cursor = null; ui.suggest = null;
   ui.rolling = true; S.rollNum++;
@@ -1380,6 +1659,7 @@ async function roll(fromBot) {
   if (!fromBot) vibrate([6, 50, 6, 50, 6]);
   await wait(rattleMs);
   rollBtn.classList.remove('shake');
+  const before = S.dice.slice();
   idx.forEach(i => { S.dice[i] = d6(); });
   let end = 0; const plan = [];
   idx.forEach((i, k) => {
@@ -1404,24 +1684,57 @@ async function roll(fromBot) {
   if (!fromBot) setTimeout(() => vibrate(12), Math.round(end * 0.55));
   await wait(end + 60);
   ui.rolling = false;
-  if (isFive(S.dice)) cur().gf = (cur().gf || 0) + 1;
+  ui.lastThrow = { idx: idx.slice(), before, after: S.dice.slice() };
+  const potWon = isFive(S.dice) ? onFive() : 0;
+  if (helpOf(cur()).glow) { const m = bestMove(cur(), S.dice); ui.best = m ? m.key : null; }
   save(); renderAll();
-  if (isFive(S.dice)) celebrateFive();
+  if (isFive(S.dice)) celebrateFive(potWon, true);
 }
 
-function celebrateFive() {
+function celebrateFive(pot, fromRoll) {
   const p = cur(), bonus = playerOptions(p, S.dice).some(o => o.bonus);
   const open = p.cards.some(c => c.s.yahtzee == null);
-  flash('GILDED FIVE!', bonus ? '+100 bonus when you score' : open ? 'Score it for 50 points' : 'Joker rule in play');
+  const sub = bonus ? '+100 bonus when you score' : open ? 'Score it for 50 points' : 'Joker rule in play';
+  flash('GILDED FIVE!', pot ? `${sub} · Jackpot! +${pot} chips` : sub);
   Sound.jackpot(); Confetti.burst(160); vibrate([30, 60, 30, 60, 80]);
-  Voice.say(bonus ? `Gilded Five! That's a hundred point bonus for ${p.name}!` : `Gilded Five! ${p.name} hits the jackpot!`);
+  Voice.say((bonus ? `Gilded Five! That's a hundred point bonus for ${p.name}!` : `Gilded Five! ${p.name} hits the jackpot!`) +
+    (pot ? ` And the chip jackpot, ${pot} chips!` : ''));
+  if (fromRoll && prefs.replay && !reduceMotion && ui.lastThrow) { ui.replaying = true; Phones.queue(); setTimeout(instantReplay, 2400); }
+}
+/* ================= instant replay: the winning throw again, in slow motion ================= */
+let replayDone = null;
+async function instantReplay() {
+  const t = ui.lastThrow;
+  if (!S || !t || !ui.replaying) { ui.replaying = false; return; }
+  const tag = $('#replayTag');
+  tag.hidden = false; document.documentElement.classList.add('replaying'); Phones.queue();
+  t.idx.forEach(i => { const tum = dieEls[i].querySelector('.tumble'); tum.classList.remove('hop'); dieEls[i].classList.remove('held'); orient(i, 0, 0, t.before[i]); });
+  Sound.ui();
+  await wait(650);
+  let end = 0; const plan = [];
+  t.idx.forEach((i, k) => {
+    const delay = k * 170, dur = Math.round(2300 + Math.random() * 400);
+    ui.tx[i] += (Math.random() < 0.5 ? -1 : 1) * 2; ui.ty[i] += Math.random() < 0.5 ? -1 : 1;
+    const tum = dieEls[i].querySelector('.tumble');
+    void tum.offsetWidth;
+    tum.style.setProperty('--dur', dur + 'ms'); tum.style.setProperty('--delay', delay + 'ms'); tum.classList.add('hop');
+    orient(i, dur, delay, t.after[i]);
+    plan.push({ i, delay: delay / 1000, dur: dur / 1000 }); end = Math.max(end, delay + dur);
+  });
+  Sound.throwDice(plan);
+  await new Promise(r => { replayDone = r; setTimeout(r, end + 900); });
+  replayDone = null;
+  tag.hidden = true; document.documentElement.classList.remove('replaying');
+  ui.replaying = false; ui.lastThrow = null;
+  if (S) { syncDiceInstant(); renderAll(); }
+  Phones.queue();
 }
 
 function toggleHold(i, fromBot) {
-  if (!S || S.phase !== 'play' || ui.rolling) return;
+  if (!S || S.phase !== 'play' || ui.rolling || ui.replaying) return;
   if (!fromBot && (botTurnNow() || tvBlocked())) return;
   if (S.rollNum === 0) { toast('Roll first, then tap dice to hold them'); return; }
-  if (S.rollNum >= 3) { toast('No rolls left — tap a gold number to score'); return; }
+  if (S.rollNum >= rollLimit(S) && !canLucky(cur())) { toast('No rolls left — tap a gold number to score'); return; }
   S.held[i] = !S.held[i];
   if (!fromBot && ui.suggest) { ui.suggest = null; renderTurn(); }
   Sound.hold(S.held[i]); if (!fromBot) vibrate(8);
@@ -1429,7 +1742,7 @@ function toggleHold(i, fromBot) {
 }
 
 function chooseCell(key, fromBot) {
-  if (!S || S.phase !== 'play' || ui.rolling || S.rollNum === 0) return;
+  if (!S || S.phase !== 'play' || ui.rolling || ui.replaying || S.rollNum === 0) return;
   if (!fromBot && (botTurnNow() || tvBlocked())) return;
   const p = cur(), o = playerOptions(p, S.dice).find(x => x.key === key);
   if (!o) return;
@@ -1443,13 +1756,22 @@ function chooseCell(key, fromBot) {
 function commit(o, fromBot) {
   const p = cur(), card = p.cards[o.c];
   if (!fromBot) { ui.undo = JSON.stringify(S); ui.undoBy = S.current; }
-  const upBefore = cardUpper(card);
+  const upBefore = cardUpper(card), before = totals(p).grand;
   card.s[o.cat] = o.val;
   if (o.bonus) card.yb = (card.yb || 0) + 1;
-  ui.lastScored = { p: S.current, key: o.key }; ui.pendingZero = null; ui.cursor = null; ui.suggest = null;
+  ui.lastScored = { p: S.current, key: o.key }; ui.pendingZero = null; ui.cursor = null; ui.suggest = null; ui.best = null;
   const pts = o.val * o.mult;
   if (o.val > 0) Sound.chips(Math.min(7, 1 + Math.ceil(pts / 10))); else Sound.scratch();
   const msgs = [];
+  if (o.val === 0 && S.rule === 'net') { p.xp = (p.xp || 0) + 5; msgs.push('Safety net: +5'); setTimeout(() => Sound.chips(2), 350); }
+  /* stats for the awards ceremony */
+  const gained = totals(p).grand - before;
+  p.last = gained;
+  if (!p.best || gained > p.best.pts) p.best = { pts: gained, cat: o.cat };
+  if (S.rollNum === 1 && o.val > 0) p.first = (p.first || 0) + 1;
+  ui.power = null;
+  if (p.team) p.turnsTaken = (p.turnsTaken || 0) + 1;
+  settleBet(o, gained);
   if (o.bonus) { msgs.push(`+${100 * o.mult} Gilded bonus!`); ui.say.push(`Gilded bonus, ${100 * o.mult} points!`); setTimeout(() => Sound.bonus(), 250); }
   if (upBefore < 63 && cardUpper(card) >= 63) { msgs.push(`+${35 * o.mult} top-section bonus!`); ui.say.push('Top section bonus!'); setTimeout(() => Sound.bonus(), 250); Confetti.burst(70); }
   if (['full', 'smS', 'lgS'].includes(o.cat) && o.val > 0) ui.say.push(`${CAT[o.cat].label}, ${pts} points.`);
@@ -1461,26 +1783,241 @@ function commit(o, fromBot) {
 }
 
 function nextTurn() {
-  S.held = [false, false, false, false, false]; S.rollNum = 0;
+  S.held = [false, false, false, false, false]; S.rollNum = 0; S.extra = 0; ui.best = null;
+  if (S.current === S.players.length - 1) endRound();
   const done = S.players.every(p => p.cards.every(card => CATS.every(c => card.s[c.id] != null)));
-  if (done) { S.phase = 'over'; save(); renderAll(); setTimeout(showResults, 900); return; }
+  if (done) { S.awards = makeAwards(); S.phase = 'over'; S.rule = null; save(); renderAll(); setTimeout(showResults, 900); return; }
   S.current = (S.current + 1) % S.players.length;
-  if (S.current === 0) S.round++;
+  if (S.current === 0) { S.round++; drawRule(); if (S.chipsOn) S.pot++; }
+  startTurn();
+  if (S.frozen && S.frozen[S.current]) { delete S.frozen[S.current]; S.extra = -1; ui.say.push(`${cur().name} is frozen. One roll fewer this turn.`); }
+  openBet();
   save(); renderAll(); setTimeout(showBanner, 280);
+}
+function endRound() {
+  const P = S.players;
+  if (S.rule === 'underdog' && P.length > 1) {
+    const low = Math.min(...P.map(p => p.last || 0)), dogs = P.filter(p => (p.last || 0) === low);
+    if (dogs.length < P.length) {
+      dogs.forEach(p => { p.xp = (p.xp || 0) + 15; p.ud = (p.ud || 0) + 1; });
+      const names = dogs.map(p => p.name).join(' and ');
+      queueToast(`Underdog bonus: +15 to ${names}`); setTimeout(() => Sound.bonus(), 900);
+      ui.say.push(`Underdog bonus for ${names}.`);
+    }
+  }
+  /* lowest standing from a quarter of the way in, for the Comeback Kid award */
+  if (P.length > 1 && S.round >= Math.ceil(maxRounds() / 4)) {
+    const T = P.map(p => totals(p).grand);
+    P.forEach((p, i) => { p.worst = Math.max(p.worst || 1, 1 + T.filter(v => v > T[i]).length); });
+  }
+}
+
+/* ================= awards ceremony ================= */
+function makeAwards() {
+  const P = S.players, T = P.map(p => totals(p).grand);
+  const rank = i => 1 + T.filter(v => v > T[i]).length;
+  const zeros = p => p.cards.reduce((a, c) => a + CATS.filter(k => c.s[k.id] === 0).length, 0);
+  const times = n => n === 1 ? 'once' : n === 2 ? 'twice' : `${n} times`;
+  const DEFS = [
+    { icon: '✨', title: 'Gilded Touch', min: 1, v: p => p.gf || 0, why: p => `rolled ${p.gf} Gilded Five${p.gf === 1 ? '' : 's'}` },
+    { icon: '🚀', title: 'Comeback Kid', min: 2, v: (p, i) => (p.worst || 1) - rank(i), why: (p, i) => `climbed from ${ord(p.worst)} to ${ord(rank(i))}` },
+    { icon: '🎰', title: 'Jackpot Hand', min: 1, v: p => p.best ? p.best.pts : 0, why: p => `${p.best.pts} points in one go with ${CAT[p.best.cat].label}` },
+    { icon: '🎩', title: 'Top Shelf', min: 63, v: p => Math.max(...p.cards.map(cardUpper)), why: p => `${Math.max(...p.cards.map(cardUpper))} in the top section` },
+    { icon: '⚡', title: 'Quick Draw', min: 2, v: p => p.first || 0, why: p => `scored ${p.first} boxes on the very first roll` },
+    { icon: '🧹', title: 'Clean Sheet', min: 0, v: p => -zeros(p), why: () => 'never scratched a single box' },
+    { icon: '🐾', title: 'Underdog Spirit', min: 1, v: p => p.ud || 0, why: p => `took the Underdog bonus ${times(p.ud)}` },
+    { icon: '🍀', title: 'Lucky Charm', min: 1, v: p => p.lucky || 0, why: p => `played ${p.lucky} lucky roll${p.lucky === 1 ? '' : 's'}` },
+    { icon: '🎲', title: 'Sharp Eye', min: 2, v: p => p.betWins || 0, why: p => `won ${p.betWins} side bets` },
+    { icon: '💥', title: 'Power Player', min: 2, v: p => p.powers || 0, why: p => `played ${p.powers} power moves` },
+    { icon: '🔎', title: 'Hint Hunter', min: 3, v: p => p.hints || 0, why: p => `asked the house for ${p.hints} tips` },
+    { icon: '🎟️', title: 'Scratch Card', min: 3, v: zeros, why: p => `crossed out ${zeros(p)} boxes without flinching` }
+  ];
+  const got = new Map();
+  DEFS.forEach(d => {
+    const vals = P.map((p, i) => d.v(p, i)), top = Math.max(...vals);
+    if (top < d.min) return;
+    P.forEach((p, i) => { if (vals[i] === top && !got.has(i)) got.set(i, { pi: i, icon: d.icon, title: d.title, why: d.why(p, i) }); });
+  });
+  P.forEach((p, i) => {
+    if (got.has(i)) return;
+    got.set(i, p.best && p.best.pts > 0
+      ? { pi: i, icon: '🌟', title: 'Finest Moment', why: `${p.best.pts} points with ${CAT[p.best.cat].label}` }
+      : { pi: i, icon: '🤝', title: 'Good Sport', why: 'kept the table smiling' });
+  });
+  /* presented from last place up to the winner */
+  return [...got.values()].sort((a, b) => rank(b.pi) - rank(a.pi) || b.pi - a.pi);
 }
 
 function undo() {
-  if (!ui.undo || ui.rolling) return;
+  if (!ui.undo || ui.rolling || ui.replaying) return;
   botToken++;
-  S = JSON.parse(ui.undo); ui.undo = null; ui.pendingZero = null; ui.cursor = null; ui.suggest = null; ui.say = [];
+  S = JSON.parse(ui.undo); ui.undo = null; ui.pendingZero = null; ui.cursor = null; ui.suggest = null; ui.say = []; ui.best = null; ui.reveal = false; ui.spoken = false; ui.power = null;
+  clearTimeout(ruleT); $('#houseCard').hidden = true;
   closeOv('results'); save(); renderAll(); syncDiceInstant(); Sound.ui(); Voice.stop(); toast('Last score undone');
+}
+
+/* ================= chips: side bets, jackpot, power moves ================= */
+const BIG_CATS = ['full', 'smS', 'lgS', 'yahtzee'];
+/* queue so bet results and bonuses don't overwrite each other */
+const toastQ = [];
+function queueToast(msg) { toastQ.push(msg); if (toastQ.length === 1) setTimeout(runToastQ, 900); }
+function runToastQ() { if (!toastQ.length) return; toast(toastQ[0], 2700); setTimeout(() => { toastQ.shift(); runToastQ(); }, 2800); }
+
+/* a fresh side bet on the player who is about to roll */
+function openBet() {
+  S.bet = null; S.turnFive = false; ui.power = null;
+  if (!S.chipsOn || S.phase !== 'play') return;
+  const p = cur();
+  const bettors = S.players.filter((x, i) => i !== S.current && (isBot(x) || x.sid));
+  if (!bettors.length) return;
+  const open = [];
+  p.cards.forEach((card, c) => CATS.forEach(k => { if (card.s[k.id] == null) open.push({ id: k.id, m: multOf(p, c) }); }));
+  if (!open.length) return;
+  const avg = open.reduce((a, o) => a + COST[o.id] * o.m, 0) / open.length;
+  const line = Math.max(5, Math.round(avg / 5) * 5);
+  const pool = [{ w: 3, k: 'over', q: `Will ${p.name} score more than ${line} points this turn?`, line, yes: 2, no: 2 }];
+  if (open.length > 1) pool.push({ w: 2, k: 'zero', q: `Will ${p.name} have to scratch a box?`, yes: 3, no: 2 });
+  if (open.some(o => BIG_CATS.includes(o.id))) pool.push({ w: 2, k: 'big', q: `Will ${p.name} score a Full House, a Straight or a Gilded Five?`, yes: 2, no: 2 });
+  pool.push({ w: 1, k: 'five', q: `Will ${p.name} roll a Gilded Five this turn?`, yes: 10, no: 0 });
+  let r = Math.random() * pool.reduce((a, x) => a + x.w, 0), pick = pool[0];
+  for (const x of pool) { r -= x.w; if (r <= 0) { pick = x; break; } }
+  S.bet = { id: uid(), k: pick.k, q: pick.q, line: pick.line || 0, yes: pick.yes, no: pick.no, open: true, by: S.current, stakes: {} };
+}
+/* stakes leave your stack straight away; winners get stake × odds back, losers feed the jackpot */
+function placeBet(pi, side, amt) {
+  const b = S && S.bet, p = S && S.players[pi];
+  if (!b || !b.open || !p || S.phase !== 'play' || pi === S.current || b.stakes[pi]) return false;
+  if (side !== 'y' && !(side === 'n' && b.no)) return false;
+  amt = Math.max(1, Math.min(3, amt | 0));
+  if ((p.chips || 0) < amt) return false;
+  p.chips -= amt; b.stakes[pi] = { side, amt };
+  Sound.chips(Math.min(4, amt + 1));
+  save(); renderChips(); Phones.queue();
+  return true;
+}
+function closeBets() { if (S.bet && S.bet.open) { S.bet.open = false; renderChips(); } }
+function settleBet(o, gained) {
+  const b = S.bet; if (!b) return;
+  S.bet = null;
+  const entries = Object.entries(b.stakes); if (!entries.length) return;
+  const hit = b.k === 'over' ? gained > b.line : b.k === 'zero' ? o.val === 0
+    : b.k === 'big' ? (BIG_CATS.includes(o.cat) && o.val > 0) : !!S.turnFive;
+  const parts = [];
+  entries.forEach(([pi, st]) => {
+    const p = S.players[pi];
+    if ((st.side === 'y') === hit) { const got = st.amt * (st.side === 'y' ? b.yes : b.no); p.chips += got; p.betWins = (p.betWins || 0) + 1; parts.push(`${p.name} +${got}`); }
+    else { S.pot += st.amt; parts.push(`${p.name} −${st.amt}`); }
+  });
+  queueToast(`Side bet came in ${hit ? 'YES' : 'NO'}: ${parts.join(' · ')}`);
+  ui.say.push(`The side bet comes in ${hit ? 'yes' : 'no'}.`);
+}
+/* computer players have a flutter while the human rolls */
+function scheduleBotBets() {
+  const b = S && S.bet; if (!b || !b.open) return;
+  S.players.forEach((p, pi) => {
+    if (!isBot(p) || pi === S.current || (p.chips || 0) < 1) return;
+    setTimeout(() => {
+      if (!S || S.bet !== b || !b.open || b.stakes[pi]) return;
+      if (Math.random() < 0.25) return;
+      let side;
+      if (b.k === 'five') { if (Math.random() > 0.3) return; side = 'y'; }
+      else if (b.k === 'zero') side = Math.random() < 0.35 ? 'y' : 'n';
+      else side = Math.random() < 0.5 ? 'y' : 'n';
+      placeBet(pi, side, p.chips > 8 && Math.random() < 0.4 ? 2 : 1);
+    }, (prefs.quick ? 500 : 900) + Math.random() * 1600);
+  });
+}
+/* dice just showed a Gilded Five: count it, pay the jackpot once per turn */
+function onFive() {
+  const p = cur(); p.gf = (p.gf || 0) + 1;
+  let won = 0;
+  if (S.chipsOn && !S.turnFive) { won = S.pot; p.chips = (p.chips || 0) + won; p.pots = (p.pots || 0) + 1; S.pot = POT_SEED; }
+  S.turnFive = true;
+  return won;
+}
+
+const powerReady = p => !!S && S.chipsOn && S.phase === 'play' && !ui.rolling && S.rollNum > 0 && !isBot(p);
+function animateDie(i, tumble) {
+  if (tumble) {
+    ui.tx[i] += Math.random() < 0.5 ? -1 : 1;
+    const tum = dieEls[i].querySelector('.tumble');
+    tum.classList.remove('hop'); void tum.offsetWidth;
+    tum.style.setProperty('--dur', '760ms'); tum.style.setProperty('--delay', '0ms'); tum.classList.add('hop');
+    orient(i, 760, 0); Sound.throwDice([{ i, delay: 0, dur: 0.76 }]);
+  } else { orient(i, 320, 0); Sound.hold(true); }
+}
+/* spend chips on a power move. a = { i, dir } for dice powers, { t } for Freeze */
+function usePower(k, a) {
+  const p = cur(), pw = POWERS[k];
+  if (!pw || ui.replaying || !powerReady(p) || (p.chips || 0) < pw.cost) return false;
+  if (k === 'freeze') {
+    const t = a.t | 0, target = S.players[t];
+    S.frozen = S.frozen || {};
+    if (t === S.current || !target || S.frozen[t]) return false;
+    S.frozen[t] = 1; p.chips -= pw.cost; p.powers = (p.powers || 0) + 1;
+    Sound.freeze(); toast(`❄ ${target.name} loses a roll on their next turn`, 2600);
+    Voice.say(`${p.name} freezes ${target.name}!`);
+  } else {
+    const i = a.i | 0; if (i < 0 || i > 4) return false;
+    if (k === 'nudge') { const v = S.dice[i] + (a.dir > 0 ? 1 : -1); if (v < 1 || v > 6) return false; S.dice[i] = v; }
+    else S.dice[i] = d6();
+    p.chips -= pw.cost; p.powers = (p.powers || 0) + 1;
+    animateDie(i, k === 'reroll');
+    toast(k === 'nudge' ? `Nudged to ${S.dice[i]}` : `Re-rolled: ${S.dice[i]}`);
+    ui.suggest = null; ui.pendingZero = null; ui.cursor = null;
+    if (helpOf(p).glow) { const m = bestMove(p, S.dice); ui.best = m ? m.key : null; }
+    if (isFive(S.dice)) { const pot = onFive(); setTimeout(() => celebrateFive(pot), k === 'reroll' ? 700 : 300); }
+  }
+  ui.power = null;
+  save(); renderAll();
+  return true;
+}
+function renderChips() {
+  const el = $('#chipLine');
+  if (!S || !S.chipsOn || S.phase !== 'play') { el.hidden = true; return; }
+  el.hidden = false;
+  const b = S.bet;
+  let h = `<span class="pot" title="Jackpot: roll a Gilded Five to win it">🪙 Jackpot <b>${S.pot}</b></span>`;
+  if (b) {
+    const st = Object.entries(b.stakes).map(([pi, s]) => { const p = S.players[pi];
+      return `<span class="stake"><span class="chip c${p.color}">${esc(initial(p.name))}</span>${s.amt} on ${s.side === 'y' ? 'Yes' : 'No'}</span>`; }).join('');
+    h += `<span class="bq"><span class="bk">Side bet</span>${esc(b.q)} <span class="odds">Yes ×${b.yes}${b.no ? ` · No ×${b.no}` : ''}</span></span>` +
+      `<span class="stakes">${st || (b.open ? '<span class="muted">Bets open on phones</span>' : '')}${b.open ? '' : '<span class="closed">Bets closed</span>'}</span>`;
+  }
+  el.innerHTML = h;
+}
+function renderPowers() {
+  const box = $('#powers'), p = cur();
+  const onPhone = !!p.sid && Phones.isOn(p.sid);
+  const show = S.chipsOn && S.phase === 'play' && !isBot(p) && !onPhone;
+  box.hidden = !show; if (!show) return;
+  const ready = powerReady(p), mode = ui.power, chips = p.chips || 0;
+  let h = `<span class="mychips">🪙 ${chips}</span>`;
+  if (!mode) {
+    h += Object.entries(POWERS).map(([k, pw]) => {
+      const noTarget = k === 'freeze' && !S.players.some((x, i) => i !== S.current && !(S.frozen || {})[i]);
+      return `<button type="button" class="pw" data-pw="${k}"${ready && chips >= pw.cost && !noTarget ? '' : ' disabled'}>${pw.short}<small>${pw.cost} chips</small></button>`;
+    }).join('');
+  } else if (mode.k === 'freeze') {
+    h += `<span class="ask">${POWERS.freeze.ask}:</span>` + S.players.map((x, i) => i === S.current || (S.frozen || {})[i] ? '' :
+      `<button type="button" class="pw tgt" data-tgt="${i}"><span class="chip c${x.color}">${esc(initial(x.name))}</span>${esc(x.name)}</button>`).join('') +
+      '<button type="button" class="pw x" data-pwx="1">Cancel</button>';
+  } else if (mode.k === 'nudge' && mode.i != null) {
+    const v = S.dice[mode.i];
+    h += `<span class="ask">Die ${mode.i + 1} shows ${v}:</span>` +
+      `<button type="button" class="pw" data-dir="-1"${v > 1 ? '' : ' disabled'}>▼ to ${v - 1 || '–'}</button>` +
+      `<button type="button" class="pw" data-dir="1"${v < 6 ? '' : ' disabled'}>▲ to ${v < 6 ? v + 1 : '–'}</button>` +
+      '<button type="button" class="pw x" data-pwx="1">Cancel</button>';
+  } else h += `<span class="ask">${POWERS[mode.k].ask}</span><button type="button" class="pw x" data-pwx="1">Cancel</button>`;
+  box.innerHTML = h;
+  dieEls.forEach(el => el.classList.toggle('pick', !!(mode && mode.k !== 'freeze' && mode.i == null)));
 }
 
 /* ================= computer players ================= */
 let botToken = 0;
 async function botPause(ms, tok) {
   await wait(prefs.quick ? ms * 0.55 : ms);
-  while (tok === botToken && anyOverlay()) await wait(250);
+  while (tok === botToken && (anyOverlay() || ui.replaying)) await wait(250);
   return tok === botToken && !!S && S.phase === 'play';
 }
 function easyPlan(p) {
@@ -1504,11 +2041,11 @@ async function runBot() {
   if (!botTurnNow()) return;
   const tok = ++botToken, p = cur(), level = p.type;
   if (!await botPause(1100, tok)) return;
-  while (S.rollNum < 3) {
+  while (S.rollNum < rollLimit(S)) {
     if (S.rollNum > 0) {
       let plan;
       if (level === 'easy') plan = easyPlan(p);
-      else { Engine.prepare(p); const b = Engine.bestHold(S.dice, 3 - S.rollNum, level === 'hard'); plan = b.stop ? { stop: true } : { stop: false, keep: keepIndices(b.K, S.dice, S.held) }; }
+      else { Engine.prepare(p); const b = Engine.bestHold(S.dice, rollLimit(S) - S.rollNum, level === 'hard'); plan = b.stop ? { stop: true } : { stop: false, keep: keepIndices(b.K, S.dice, S.held) }; }
       if (plan.stop) break;
       for (let i = 0; i < 5; i++) {
         if (!!S.held[i] !== plan.keep[i]) { toggleHold(i, true); if (!await botPause(300, tok)) return; }
@@ -1528,7 +2065,7 @@ async function runBot() {
 
 /* ================= hint ================= */
 function showHint() {
-  if (!S || S.phase !== 'play' || ui.rolling || botTurnNow() || tvBlocked()) return;
+  if (!S || S.phase !== 'play' || ui.rolling || ui.replaying || botTurnNow() || tvBlocked()) return;
   if (S.rollNum === 0) { toast('Roll first — then ask for a hint'); return; }
   const p = cur(); Engine.prepare(p);
   const scoreAdvice = () => {
@@ -1538,9 +2075,10 @@ function showHint() {
       : `Hint: nothing scores well — scratching ${CAT[m.cat].label}${col} costs you least.`;
   };
   let text, keep = null;
-  if (S.rollNum >= 3) text = scoreAdvice();
+  p.hints = (p.hints || 0) + 1;
+  if (S.rollNum >= rollLimit(S)) text = scoreAdvice();
   else {
-    const b = Engine.bestHold(S.dice, 3 - S.rollNum, true);
+    const b = Engine.bestHold(S.dice, rollLimit(S) - S.rollNum, true);
     if (b.stop) text = scoreAdvice().replace('Hint: ', 'Hint: this is as good as it gets — ');
     else { keep = keepIndices(b.K, S.dice, S.held); text = 'Hint: ' + describeKeep(b.K); }
   }
@@ -1583,24 +2121,41 @@ function showResults() {
   const champ = winners.length > 1
     ? `<div class="crown">👑</div><span class="foil">It's a tie!</span><div class="score">${winners.map(w => esc(w.p.name)).join(' & ')} — ${winners[0].t.grand} points</div>`
     : `<div class="crown">👑</div><span class="foil">${esc(winners[0].p.name)}</span><div class="score">${solo ? 'Final score: ' : 'Wins with '}${winners[0].t.grand} points</div>`;
-  let h = `<h2 id="resTitle">${solo ? 'Game complete' : 'The house pays out'}</h2><div class="champ">${champ}</div><div class="board">`;
+  let h = `<h2 id="resTitle">${solo ? 'Game complete' : 'The house pays out'}</h2><div class="champ">${champ}</div>`;
+  let hiRoll = null;
+  if (S.chipsOn && !solo) {
+    const most = Math.max(...S.players.map(p => p.chips || 0)), rich = S.players.filter(p => (p.chips || 0) === most);
+    hiRoll = { names: rich.map(p => p.name), chips: most };
+    h += `<div class="hiroll"><span class="hr-k">High Roller</span><span class="hr-n">${rich.map(p => `<span class="chip c${p.color}">${esc(initial(p.name))}</span>${esc(p.name)}`).join(' &amp; ')}</span><span class="hr-c">🪙 ${most} chips</span></div>`;
+  }
+  h += '<div class="board">';
   rows.forEach(r => {
     const t = r.t, k = nameKey(r.p.name);
-    const brk = S.mode === 'triple'
+    const brk = (S.mode === 'triple'
       ? t.cols.map(c => `×${c.mult} ${c.total}`).join(' · ')
-      : `Top ${t.cols[0].up}${t.cols[0].bonus ? ' + 35 bonus' : ''} · Bottom ${t.cols[0].low}${t.cols[0].yb ? ` · Gilded bonus ${t.cols[0].yb}` : ''}`;
+      : `Top ${t.cols[0].up}${t.cols[0].bonus ? ' + 35 bonus' : ''} · Bottom ${t.cols[0].low}${t.cols[0].yb ? ` · Gilded bonus ${t.cols[0].yb}` : ''}`) +
+      (t.xp ? ` · Extras ${t.xp}` : '') + (S.chipsOn ? ` · 🪙 ${r.p.chips || 0} chips` : '');
     const badges = (houseRecord.has(k) ? '<span class="badge">House record</span>' : pb.has(k) ? '<span class="badge">Personal best</span>' : '') +
       (isBot(r.p) ? ` <span class="bot">${BOT_LABEL[r.p.type]}</span>` : '');
     h += `<div class="rank${r.rank === 1 ? ' first' : ''}"><div class="pos">${ord(r.rank)}</div><span class="chip c${r.p.color}">${esc(initial(r.p.name))}</span>` +
       `<div class="nm">${esc(r.p.name)}${badges}</div><div class="br">${brk}</div><div class="tot">${t.grand}</div></div>`;
   });
-  h += `</div><button class="btn" type="button" id="resRematch">Play again, same players</button>` +
+  h += '</div>';
+  const awards = S.awards || [];
+  if (awards.length) {
+    h += '<h3 class="aw-head">Awards</h3><div class="awards">' + awards.map((a, k) => {
+      const p = S.players[a.pi];
+      return `<div class="award" style="--i:${k}"><span class="aw-ic" aria-hidden="true">${a.icon}</span><div class="aw-tx">` +
+        `<div class="aw-t">${esc(a.title)}</div><div class="aw-w"><span class="chip c${p.color}">${esc(initial(p.name))}</span><b>${esc(p.name)}</b> ${esc(a.why)}</div></div></div>`;
+    }).join('') + '</div>';
+  }
+  h += `<button class="btn" type="button" id="resRematch">Play again, same players</button>` +
     `<button class="btn alt" type="button" id="resNew">New players</button>` +
     `<button class="btn alt" type="button" id="resRec">Records</button>` +
     (ui.undo ? `<button class="btn alt" type="button" id="resUndo">Undo last score</button>` : '');
   $('#resultsCard').innerHTML = h;
   openOv('results');
-  $('#resRematch').onclick = () => { Sound.ui(); startGame(S.players.map(p => ({ name: p.name, color: p.color, type: p.type, sid: p.sid })), S.mode); };
+  $('#resRematch').onclick = () => { Sound.ui(); startGame(S.players.flatMap(membersOf), S.mode, !!S.teams); };
   $('#resNew').onclick = () => { Sound.ui(); closeOv('results'); openSetup(); };
   $('#resRec').onclick = () => { Sound.ui(); openRecords(); };
   const u = $('#resUndo'); if (u) u.onclick = undo;
@@ -1610,6 +2165,8 @@ function showResults() {
     : solo ? `Game over. Final score, ${winners[0].t.grand}.` : `And the winner is ${winners[0].p.name}, with ${winners[0].t.grand} points!`;
   if ([...houseRecord].length) speech += ' A new house record!';
   else if ([...pb].length) speech += ' And a new personal best!';
+  if (hiRoll) speech += ` High roller: ${hiRoll.names.join(' and ')}, with ${hiRoll.chips} chips.`;
+  if (awards.length && !solo) speech += ' Now for the awards. ' + awards.map(a => `${a.title}: ${S.players[a.pi].name}.`).join(' ');
   setTimeout(() => Voice.say([...lead, speech].join(' ')), 1300);
 }
 function openRecords() {
@@ -1666,7 +2223,7 @@ function openSetup() {
   $('#resumeBox').hidden = !canResume;
   if (canResume) $('#resumeInfo').textContent = `${saved.players.map(p => p.name).join(', ')} · round ${saved.round} of ${13 * saved.ncols}`;
   $('#optSound').checked = prefs.sound; $('#optVoice').checked = prefs.voiceOn; $('#optAmb').checked = prefs.ambOn;
-  $('#optTV').checked = prefs.tv; $('#optQuick').checked = prefs.quick;
+  $('#optTV').checked = prefs.tv; $('#optQuick').checked = prefs.quick; $('#optHouse').checked = prefs.house; $('#optChips').checked = prefs.chips; $('#optTeams').checked = prefs.teams; $('#optReplay').checked = prefs.replay;
   renderSetup(); openOv('setup');
 }
 function renderSetup() {
@@ -1681,7 +2238,7 @@ function renderSetup() {
     b.onclick = () => { prefs.count = n; Sound.unlock(); Sound.ui(); renderSetup(); };
     c.appendChild(b);
   }
-  renderRegulars(); renderSeats(); Phones.renderSetup();
+  renderRegulars(); renderSeats(); Phones.renderSetup(); renderTeams();
 }
 function renderRegulars() {
   $('#regsBox').hidden = !profiles.length;
@@ -1696,11 +2253,16 @@ function renderSeats() {
     const ph = seat.type === 'human' ? `Player ${i + 1}` : BOT_NAMES[seat.type];
     row.innerHTML = `<button type="button" class="chip c${seat.color}" aria-label="Change colour for seat ${i + 1}">${esc(seat.name ? initial(seat.name) : i + 1)}</button>` +
       `<input type="text" maxlength="14" autocomplete="off" placeholder="${esc(ph)}" aria-label="Name for seat ${i + 1}">` +
-      `<select aria-label="Who plays seat ${i + 1}"><option value="human">Person</option><option value="easy">Easy bot</option><option value="medium">Medium bot</option><option value="hard">Hard bot</option></select>`;
+      `<select aria-label="Who plays seat ${i + 1}"><option value="human">Person</option><option value="learner">Learner</option><option value="junior">Junior</option>` +
+      `<option value="easy">Easy bot</option><option value="medium">Medium bot</option><option value="hard">Hard bot</option></select>`;
     const inp = row.querySelector('input'), sel = row.querySelector('select'), chip = row.querySelector('.chip');
-    inp.value = seat.name; sel.value = seat.type;
-    inp.oninput = () => { seat.name = inp.value; chip.textContent = seat.name.trim() ? initial(seat.name) : i + 1; };
-    sel.onchange = () => { seat.type = sel.value; inp.placeholder = seat.type === 'human' ? `Player ${i + 1}` : BOT_NAMES[seat.type]; Sound.ui(); };
+    inp.value = seat.name; sel.value = seat.type === 'human' ? (HELP[seat.help] && seat.help !== 'std' ? seat.help : 'human') : seat.type;
+    inp.oninput = () => { seat.name = inp.value; chip.textContent = seat.name.trim() ? initial(seat.name) : i + 1; renderTeams(); };
+    sel.onchange = () => {
+      if (sel.value === 'learner' || sel.value === 'junior') { seat.type = 'human'; seat.help = sel.value; }
+      else { seat.type = sel.value; seat.help = 'std'; }
+      inp.placeholder = seat.type === 'human' ? `Player ${i + 1}` : BOT_NAMES[seat.type]; Sound.ui(); renderTeams();
+    };
     chip.onclick = () => {
       const used = new Set(prefs.seats.slice(0, prefs.count).filter((s, j) => j !== i).map(s => s.color));
       let c = seat.color; for (let k = 0; k < 8; k++) { c = (c + 1) % 8; if (!used.has(c)) break; }
@@ -1725,14 +2287,38 @@ $('#regs').addEventListener('click', e => {
   if (prefs.seats.slice(0, prefs.count).some(s => nameKey(s.name) === nameKey(pr.name))) { toast(`${pr.name} already has a seat`); return; }
   let i = prefs.seats.slice(0, prefs.count).findIndex(s => !s.name.trim() && s.type === 'human');
   if (i === -1) { if (prefs.count >= 8) { toast('All 8 seats are full'); return; } i = prefs.count; prefs.count++; }
-  const seat = prefs.seats[i]; seat.name = pr.name; seat.type = 'human';
+  const seat = prefs.seats[i]; seat.name = pr.name; seat.type = 'human'; seat.help = HELP[pr.help] ? pr.help : 'std';
   const clash = prefs.seats.slice(0, prefs.count).findIndex((s, j) => j !== i && s.color === pr.color);
   if (clash !== -1) prefs.seats[clash].color = seat.color;
   seat.color = pr.color;
   Sound.ui(); renderSetup();
 });
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (!b) return; prefs.mode = b.dataset.mode; Sound.unlock(); Sound.ui(); renderSetup(); });
+$('#optHouse').onchange = e => { prefs.house = e.target.checked; savePrefs(); Sound.ui(); };
+$('#optChips').onchange = e => { prefs.chips = e.target.checked; savePrefs(); Sound.ui(); };
+$('#optTeams').onchange = e => { prefs.teams = e.target.checked; savePrefs(); Sound.ui(); renderTeams(); Phones.queue(); };
+$('#btnShuffleTeams').onclick = () => {
+  Sound.ui();
+  if (Phones.active()) Phones.shuffle();
+  else {
+    const list = prefs.seats.slice(0, prefs.count);
+    for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+    list.forEach((s, i) => { prefs.seats[i] = s; }); savePrefs(); renderSeats();
+  }
+  renderTeams(); Phones.queue();
+};
+/* shows who is paired with whom: neighbours in the list, 1 + 2, 3 + 4 */
+function renderTeams() {
+  const box = $('#teamsBox'); box.hidden = !prefs.teams; if (!prefs.teams) return;
+  const list = Phones.active() ? Phones.seats().map(s => s.name)
+    : prefs.seats.slice(0, prefs.count).map((s, i) => s.name.trim() || (s.type === 'human' ? `Player ${i + 1}` : BOT_NAMES[s.type]));
+  if (list.length < 2) { $('#teamsPreview').textContent = 'Add at least two players to make a team.'; return; }
+  const teams = [];
+  for (let i = 0; i < list.length; i += 2) teams.push(list.slice(i, i + 2).join(' & ') + (i + 1 >= list.length ? ' (plays alone)' : ''));
+  $('#teamsPreview').innerHTML = teams.map((t, i) => `<span><b>Team ${i + 1}</b> ${esc(t)}</span>`).join('');
+}
 function applySetupToggles() {
+  prefs.house = $('#optHouse').checked; prefs.chips = $('#optChips').checked; prefs.teams = $('#optTeams').checked; prefs.replay = $('#optReplay').checked;
   prefs.sound = $('#optSound').checked; prefs.voiceOn = $('#optVoice').checked; prefs.ambOn = $('#optAmb').checked; prefs.quick = $('#optQuick').checked;
   savePrefs(); Sound.setMaster(prefs.sound); syncSoundBtn(); Sound.ambience(prefs.ambOn && prefs.sound);
   setTV($('#optTV').checked);
@@ -1745,10 +2331,10 @@ $('#btnStart').onclick = () => {
     const s = prefs.seats[i];
     let name = s.name.trim() || (s.type === 'human' ? `Player ${i + 1}` : BOT_NAMES[s.type]);
     let n = 2; const base = name; while (used.has(nameKey(name))) name = `${base} ${n++}`;
-    used.add(nameKey(name)); seats.push({ name, color: s.color, type: s.type });
+    used.add(nameKey(name)); seats.push({ name, color: s.color, type: s.type, help: s.type === 'human' ? s.help : 'std' });
     if (s.type === 'human' && s.name.trim()) {
       profiles = profiles.filter(pr => nameKey(pr.name) !== nameKey(name));
-      profiles.unshift({ name, color: s.color });
+      profiles.unshift({ name, color: s.color, help: s.help || 'std' });
     }
   }
   profiles = profiles.slice(0, 24); store.set(K_PROF, profiles);
@@ -1758,7 +2344,7 @@ $('#btnStart').onclick = () => {
 $('#btnResume').onclick = () => {
   const saved = store.get(K_GAME, null); if (!saved) return;
   applySetupToggles();
-  S = saved; resetUi();
+  S = saved; resetUi(); setHouse(S.rule);
   closeOv('setup'); renderAll(); syncDiceInstant(); showBanner(); requestWake();
 };
 $('#btnCastHelp1').onclick = () => openOv('cast');
@@ -1784,7 +2370,7 @@ $('#menu').addEventListener('click', e => {
     const inPlay = S && S.phase === 'play';
     if (inPlay && confirmNew !== act) { renderMenu(); confirmNew = act; b.textContent = 'Tap again — this ends the current game'; return; }
     closeOv('menu');
-    if (act === 'restart' && S) startGame(S.players.map(p => ({ name: p.name, color: p.color, type: p.type, sid: p.sid })), S.mode);
+    if (act === 'restart' && S) startGame(S.players.flatMap(membersOf), S.mode, !!S.teams);
     else { store.del(K_GAME); openSetup(); }
   }
 });
@@ -1860,13 +2446,32 @@ addEventListener('resize', applyLayout);
 /* ================= input ================= */
 rollBtn.addEventListener('click', () => roll(false));
 hintBtn.addEventListener('click', showHint);
-tray.addEventListener('click', e => { const b = e.target.closest('.die'); if (b) toggleHold(+b.dataset.i, false); });
+tray.addEventListener('click', e => {
+  const b = e.target.closest('.die'); if (!b) return;
+  const m = ui.power;
+  if (m && (m.k === 'reroll' || m.k === 'nudge') && m.i == null && S && S.phase === 'play' && !tvBlocked()) {
+    if (m.k === 'reroll') usePower('reroll', { i: +b.dataset.i });
+    else { m.i = +b.dataset.i; Sound.ui(); renderPowers(); }
+    return;
+  }
+  toggleHold(+b.dataset.i, false);
+});
+$('#powers').addEventListener('click', e => {
+  if (!S || botTurnNow() || tvBlocked()) return;
+  const pw = e.target.closest('[data-pw]'), x = e.target.closest('[data-pwx]'), d = e.target.closest('[data-dir]'), t = e.target.closest('[data-tgt]');
+  if (pw && !pw.disabled) { ui.power = { k: pw.dataset.pw, i: null }; Sound.ui(); renderPowers(); }
+  else if (x) { ui.power = null; Sound.ui(); renderPowers(); }
+  else if (d && !d.disabled && ui.power) usePower('nudge', { i: ui.power.i, dir: +d.dataset.dir });
+  else if (t) usePower('freeze', { t: +t.dataset.tgt });
+});
 table.addEventListener('click', e => { const td = e.target.closest('td[data-key]'); if (td) chooseCell(td.dataset.key, false); });
 table.addEventListener('keydown', e => {
   const td = e.target.closest('td[data-key]');
   if (td && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); chooseCell(td.dataset.key, false); }
 });
 $('#btnUndo').onclick = undo;
+$('#replayTag').onclick = () => { if (replayDone) replayDone(); };
+$('#ruleLine').onclick = () => { if (S && S.rule && $('#houseCard').hidden) revealRule(false); };
 
 function moveCursor(dir) {
   if (!S || S.phase !== 'play' || ui.rolling || S.rollNum === 0 || botTurnNow()) return;
@@ -1974,8 +2579,9 @@ const Phones = (() => {
   }
   function colourOf(id) {
     if (!colour.has(id)) {
-      const mine = S && S.players.find(p => p.sid === id);
-      if (mine) colour.set(id, mine.color);
+      const mine = S && S.players.find(p => holdsSid(p, id));
+      const mem = mine && mine.team ? mine.team.find(m => m.sid === id) : null;
+      if (mine) colour.set(id, mem ? mem.color : mine.color);
       else { const u = usedColours(id); let c = 0; while (u.has(c) && c < 7) c++; colour.set(id, c); }
     }
     return colour.get(id);
@@ -1992,7 +2598,7 @@ const Phones = (() => {
     let changed = false;
     roster.forEach(e => {
       if (!e.on || sids.has(e.id)) return;
-      const c = S.players.filter(p => p.sid && !isBot(p) && !roster.some(r => r.id === p.sid && r.on) && nameKey(p.name) === nameKey(e.name));
+      const c = S.players.filter(p => !p.team && p.sid && !isBot(p) && !roster.some(r => r.id === p.sid && r.on) && nameKey(p.name) === nameKey(e.name));
       if (c.length === 1) { const old = c[0].sid; c[0].sid = e.id; changed = true; colour.set(e.id, c[0].color); send({ t: 'kick', id: old }); }
     });
     if (changed) save();
@@ -2005,9 +2611,16 @@ const Phones = (() => {
       used.add(nameKey(nm)); out.push({ name: nm, color, type, sid: sid || null });
     };
     roster.filter(r => r.on).slice(0, 8).forEach(r => add(r.name, colourOf(r.id), 'human', r.id));
+    const nPh = out.length;
     prefs.phoneBots.slice(0, 8 - out.length).forEach(b => add(BOT_NAMES[b.type], b.color, b.type));
+    out.forEach((s, i) => { s.help = s.sid && HELP[prefs.phoneHelp[s.sid]] ? prefs.phoneHelp[s.sid] : 'std'; s.okey = s.sid || 'bot' + (i - nPh); s.pos = i; });
+    /* teams pair neighbours in the list as shown, until "Shuffle teams" deals a new order */
+    if (prefs.teams && order.size) out.sort((a, b) => (order.has(a.okey) ? order.get(a.okey) : 1000 + a.pos) - (order.has(b.okey) ? order.get(b.okey) : 1000 + b.pos));
     return out;
   }
+  /* team order: a random key per seat, re-drawn by "Shuffle teams" */
+  const order = new Map();
+  function shuffle() { order.clear(); seats().forEach(s => order.set(s.okey, Math.random())); }
   function startPhoneGame() {
     if (status !== 'live') { toast('Still connecting to the server, one moment'); return; }
     const list = seats();
@@ -2021,25 +2634,28 @@ const Phones = (() => {
   function push() {
     if (status !== 'live') return;
     if (!S || !$('#setup').hidden) {
-      send({ t: 'bcast', d: { k: 'lobby', players: seats().map(s => ({ id: s.sid, name: s.name, color: s.color, bot: s.type !== 'human' })) } });
+      send({ t: 'bcast', d: { k: 'lobby', teams: !!prefs.teams, players: seats().map(s => ({ id: s.sid, name: s.name, color: s.color, bot: s.type !== 'human' })) } });
     } else {
-      send({ t: 'bcast', d: { k: 'game', S, ui: { rolling: !!ui.rolling, suggest: ui.suggest, cursor: ui.cursor, undoBy: ui.undo ? ui.undoBy : null } } });
+      send({ t: 'bcast', d: { k: 'game', S, ui: { rolling: !!ui.rolling, suggest: ui.suggest, cursor: ui.cursor, best: ui.best,
+        undoBy: ui.undo ? ui.undoBy : null, replay: !!ui.replaying, powers: S.chipsOn ? POWERS : null, house: S.rule && RULE[S.rule] ? { name: RULE[S.rule].name, text: RULE[S.rule].text } : null } } });
     }
   }
 
   /* ---- actions arriving from phones ---- */
   function onAction(id, a) {
     if (!S || !a) return;
-    const me = S.players.findIndex(p => p.sid === id);
+    const me = S.players.findIndex(p => holdsSid(p, id));
     if (me < 0) return;
     phoneCall = true;
     try {
       if (a.a === 'undo') { if (ui.undo && ui.undoBy === me) undo(); return; }
-      if (S.phase !== 'play' || S.current !== me) return;
+      if (a.a === 'bet') { placeBet(me, a.side, a.amt); return; }
+      if (S.phase !== 'play' || S.current !== me || S.players[me].sid !== id) return;
       if (a.a === 'roll') roll(false);
       else if (a.a === 'hold') { const i = a.i | 0; if (i >= 0 && i < 5) toggleHold(i, false); }
       else if (a.a === 'choose' && typeof a.key === 'string') { if (a.zero) ui.pendingZero = a.key; chooseCell(a.key, false); }
       else if (a.a === 'hint') showHint();
+      else if (a.a === 'power' && typeof a.k === 'string') usePower(a.k, { i: a.i, dir: a.dir, t: a.t });
     } finally { phoneCall = false; }
   }
 
@@ -2064,8 +2680,11 @@ const Phones = (() => {
   function rowsHtml(withBots) {
     let h = '';
     roster.forEach(r => {
+      const hv = prefs.phoneHelp[r.id] || 'std';
       h += `<div class="pseat"><button type="button" class="chip c${colourOf(r.id)}" data-chip="${esc(r.id)}" aria-label="Change colour">${esc(initial(r.name))}</button>` +
         `<div class="nm">${esc(r.name)}</div><span class="tag${r.on ? '' : ' off'}">${r.on ? 'Phone' : 'Offline'}</span>` +
+        (withBots ? `<select data-hsel="${esc(r.id)}" aria-label="Help for ${esc(r.name)}">` +
+          ['std', 'learner', 'junior'].map(k => `<option value="${k}"${hv === k ? ' selected' : ''}>${HELP[k].label}</option>`).join('') + '</select>' : '') +
         `<button type="button" class="x" data-kick="${esc(r.id)}" aria-label="Remove ${esc(r.name)}">×</button></div>`;
     });
     if (withBots) prefs.phoneBots.forEach((b, i) => {
@@ -2089,6 +2708,7 @@ const Phones = (() => {
     $('#phonesNote').textContent = noteText();
     $('#phoneSeats').innerHTML = rowsHtml(true) || '<p class="muted" style="text-align:center">No one has joined yet. Scan the code with a phone.</p>';
     const full = roster.filter(r => r.on).length + prefs.phoneBots.length >= 8;
+    renderTeams();
     $('#addBots').innerHTML = ['easy', 'medium', 'hard'].map(l => `<button type="button" class="btn alt small" data-addbot="${l}"${full ? ' disabled' : ''}>+ ${l[0].toUpperCase() + l.slice(1)} bot</button>`).join('');
   }
   function redraw() {
@@ -2099,7 +2719,7 @@ const Phones = (() => {
     fillJoin($('#qrImg2'), $('#joinUrl2'), $('#roomCode2'));
     $('#phonesNote2').textContent = noteText();
     $('#phoneList').innerHTML = (roster.map(r => {
-      const mine = S && S.players.some(p => p.sid === r.id);
+      const mine = S && S.players.some(p => holdsSid(p, r.id));
       return `<div class="pseat"><span class="chip c${colourOf(r.id)}">${esc(initial(r.name))}</span><div class="nm">${esc(r.name)}</div>` +
         `<span class="tag${r.on ? '' : ' off'}">${r.on ? (mine ? 'Playing' : 'Watching') : 'Offline'}</span>` +
         `<button type="button" class="x" data-kick="${esc(r.id)}" aria-label="Remove ${esc(r.name)}">×</button></div>`;
@@ -2130,6 +2750,8 @@ const Phones = (() => {
   }
   ['#phoneSeats', '#addBots', '#phoneList'].forEach(sel => $(sel).addEventListener('click', handleList));
   $('#phoneSeats').addEventListener('change', e => {
+    const hs = e.target.closest('[data-hsel]');
+    if (hs) { if (hs.value === 'std') delete prefs.phoneHelp[hs.dataset.hsel]; else prefs.phoneHelp[hs.dataset.hsel] = hs.value; savePrefs(); Sound.ui(); return; }
     const s = e.target.closest('[data-bsel]'); if (!s) return;
     prefs.phoneBots[+s.dataset.bsel].type = s.value; savePrefs(); Sound.ui(); redraw(); queue();
   });
@@ -2140,7 +2762,7 @@ const Phones = (() => {
   };
   $('#btnPhones').onclick = () => { Sound.ui(); openOv2(); };
 
-  return { probe, available, active, isOn, queue, renderSetup, startPhoneGame, openOv2, refreshUi };
+  return { probe, available, active, isOn, queue, renderSetup, startPhoneGame, openOv2, refreshUi, seats, shuffle };
 })();
 
 /* ================= boot ================= */
@@ -2149,7 +2771,7 @@ syncSoundBtn();
 applyLayout();
 renderVoicePick();
 const savedGame = store.get(K_GAME, null);
-if (savedGame && savedGame.v === 2 && savedGame.phase === 'play') { S = savedGame; renderAll(); syncDiceInstant(); }
+if (savedGame && savedGame.v === 2 && savedGame.phase === 'play') { S = savedGame; setHouse(S.rule); renderAll(); syncDiceInstant(); }
 else { S = newGame([{ name: 'Player 1', color: 0, type: 'human' }], 'classic'); renderAll(); syncDiceInstant(); S = null; }
 openSetup();
 Phones.probe();

@@ -42,7 +42,7 @@ function rulesJs() {
   if (a < 0 || b < 0) throw new Error('rules markers missing in index.html');
   const body = html.slice(a + 15, b);
   return 'window.Rules=(function(){' + body +
-    '\nreturn {CATS,UPPER,LOWER,CAT,counts,sum,isFive,rawScore,turnOptions,multOf,playerOptions,cardUpper,cardTotals,totals};})();';
+    '\nreturn {CATS,UPPER,LOWER,CAT,counts,sum,isFive,rawScore,turnOptions,multOf,playerOptions,cardUpper,cardTotals,totals,setHouse,ptsLabel,rollLimit};})();';
 }
 function send(res, code, type, body) {
   res.writeHead(code, { 'Content-Type': type, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
