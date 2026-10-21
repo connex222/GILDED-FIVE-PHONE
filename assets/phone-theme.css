@@ -1,0 +1,49 @@
+/* Gilded Five phone-controller visual refresh · matches the host */
+:root{--felt:#103f3b;--felt-hi:#1d6958;--felt-deep:#06191e;--sticky:#0e3230;--gold:#e5b058;--gold-hi:#ffdf99;--gold-lo:#8d5a2a;--gold-pale:#fff0c6;--cream:#f5f8f3;--cream-dim:#d2ded9;--cream-faint:#92aaa6;--ink:#202014;--line:rgba(238,191,110,.44);--line-soft:rgba(238,191,110,.18)}
+html,body{background:#06191e;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+#app{background:radial-gradient(ellipse at 50% 0,#246b5b7a,transparent 60%),radial-gradient(ellipse at 100% 95%,#0f45477a,transparent 65%),linear-gradient(145deg,#0d3132,#071b22 75%)}
+#scrJoin .center{max-width:475px;justify-content:center;gap:12px;overflow-y:auto;padding-block:20px}
+.phone-logo{display:block;max-width:min(91%,350px);height:auto;margin:0 auto -7px;filter:drop-shadow(0 12px 22px #0008)}
+#scrJoin .tag{font-family:Georgia,serif;font-style:italic;color:#f7dfb1;letter-spacing:.05em}
+.join-kicker{font-size:11px;letter-spacing:.22em;color:#eebd73;text-align:center;text-transform:uppercase;font-weight:800}
+#joinForm{flex:0 0 auto;width:100%;background:#071f26cc;border:1px solid #eabd764d;border-radius:22px;padding:19px!important;margin-top:8px;box-shadow:0 18px 44px #0006}
+.field{gap:8px}.field label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#f2c782}
+.field input{background:#092b32;border:1px solid #d9b97880;color:#fff;border-radius:13px;min-height:58px}
+.field input:focus{border-color:#ffe0a0}
+.field input.code{font-weight:900;letter-spacing:.36em;background:#173c3d}
+.field input::placeholder{color:#97b5b0}
+.btn{border-radius:15px;font-family:Inter,system-ui,sans-serif;text-transform:uppercase;font-weight:900;letter-spacing:.04em;background:linear-gradient(170deg,#fff4d0,#ffda81 30%,#e3a33b 78%,#b8712d);border:1px solid #fff0be;box-shadow:0 4px 0 #764919,0 10px 22px #0008;color:#211c12}
+.btn:hover:not(:disabled){filter:brightness(1.05)}
+.btn.alt{border-radius:14px;border:1px solid #dcb77674;background:#103235;color:#ffe09b;box-shadow:none}
+.gbar{padding:10px 13px;gap:8px;min-height:65px;background:#061c23ec;border-bottom:1px solid #d7ab6373;box-shadow:0 6px 26px #0004}
+.gbar .nm{font-weight:850;font-size:16px}.gbar .sub{color:#c2d5ce}.gbar .scores{border:1px solid #e4bd7970;background:#153d3c;color:#ffdf9d;border-radius:12px;min-height:44px;padding:0 11px}
+.turnbar{border-radius:12px;border:1px solid #d6af6b77;background:#10393d;font-size:13px;padding:11px 8px;margin-top:9px}
+.turnbar.mine{background:linear-gradient(160deg,#fff1c6,#e4ae56);color:#142720}
+.tray{position:relative;border-radius:20px;margin:9px 12px 3px;padding:calc(var(--d)*.22) 3px calc(var(--d)*.18);gap:clamp(5px,2vw,10px);background:radial-gradient(ellipse at center,#2d67594d,transparent 80%)}
+.msg{padding:9px 14px 6px;min-height:2.3em;color:#dce5de}
+.actions{gap:9px;padding:0 13px 10px}
+.hintb{height:61px;width:66px;border-radius:14px;border:1px solid #eec98496;background:#163b3c;color:#ffe1a1}
+.rollb{min-height:61px;font-size:1.18em}
+.tabs{gap:9px;padding:5px 13px 9px}.tabs button{border-radius:12px;border:1px solid #ba9d647a;background:#0d3032;color:#f0f5ec;font-size:13px;min-height:48px}
+.tabs button[aria-pressed=true]{background:linear-gradient(155deg,#f8dea4,#cf9647);color:#18271e;border-color:#ffe6a7}
+.panel{margin:0 10px 10px;border-radius:16px;background:#061d24de;border:1px solid #bd9a5a75;padding:9px;box-shadow:inset 0 1px 0 #fff1}
+.orow{border-bottom:1px solid #c7ac721b;padding:3px 0 7px}.orow .ol{font-size:14px}.orow .ol small{color:#e5be7f}
+.opt{border-radius:12px;border:1px solid #e6b76d94;background:#d8ad5230;color:#ffe0a3;min-height:50px}
+.opt.best{box-shadow:0 0 0 2px #fada8d,0 0 16px #f9c25b5e}
+.sect{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:#e8be7e;margin:12px 0 7px}
+.card thead th,.card tr.sub td,.card tr.sub th{color:#f4cb84}
+.card tr.tot td,.card tr.tot th{color:#ffdf98}
+.pill,.rank{background:#123836;border:1px solid #dbb6744d}
+.sheet{background:#031217e8;backdrop-filter:blur(14px)}
+.sheet .box{border:1px solid #e2bd7a83;border-radius:24px;background:radial-gradient(ellipse at 50% 0,#1a5749,#0b2c30 52%,#081d24);box-shadow:0 25px 65px #0008}
+.sheet h2{font-family:Georgia,serif;color:#ffda8f}
+.betbox,.hiroll{background:#092b2fbf;border:1px dashed #e4b86c}
+.powers .pw{background:#e3b45a25;border:1px solid #e6b66b;border-radius:12px}
+.house{border-radius:12px;background:#f8eacb}
+#scrWait .center{background:#092a30b0;border:1px solid #dbb7733e;border-radius:24px;max-width:400px;max-height:460px;flex:none;margin:auto;padding:25px 18px;box-shadow:0 15px 50px #0007}
+#scrWait .title{font-family:Georgia,serif;font-size:34px}
+@media(max-width:380px){.gbar{padding:8px}.gbar .scores{font-size:12px;padding:0 8px}.tray{margin-left:6px;margin-right:6px}.actions,.tabs{padding-left:10px;padding-right:10px}#joinForm{padding:14px!important}}
+@media(max-height:640px){#scrJoin .center{justify-content:flex-start}.phone-logo{max-width:215px}#joinForm{padding:12px!important;margin-top:1px}}
+@media(prefers-reduced-motion:reduce){.turnbar.mine,.die.rolling,.opt.glow{animation:none}}
+
+.wait-logo{display:block;width:min(70%,230px);height:auto;margin:-5px auto 2px;filter:drop-shadow(0 6px 12px #0007)}

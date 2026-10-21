@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08331f">
+<meta name="theme-color" content="#071b21">
+<link rel="icon" type="image/svg+xml" href="assets/gilded-five-mark.svg">
 <title>Gilded Five - Phone</title>
 <style>
 :root{
@@ -179,6 +180,7 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
 @media (max-height:640px){.msg{min-height:1.6em;padding-top:8px}.tray{padding-top:8px}.turnbar{padding:5px}}
 @media (prefers-reduced-motion: reduce){.die.rolling,.turnbar.mine,.house.new,.opt.glow{animation:none}}
 </style>
+<link rel="stylesheet" href="assets/phone-theme.css">
 </head>
 <body>
 <div id="app">
@@ -187,7 +189,8 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
   <!-- join -->
   <section class="screen" id="scrJoin" hidden>
     <div class="center">
-      <div class="title foil">GILDED FIVE</div>
+      <div class="join-kicker">Your seat at the table awaits</div>
+      <img class="phone-logo" src="assets/gilded-five-logo.svg" width="750" height="328" alt="Gilded Five">
       <div class="tag">All that glitters rolls.</div>
       <form id="joinForm" class="center" style="padding:0;gap:12px" autocomplete="off">
         <div class="field"><label for="inCode">Room code (shown on the TV)</label>
@@ -203,6 +206,7 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
   <!-- waiting / lobby -->
   <section class="screen" id="scrWait" hidden>
     <div class="center" style="text-align:center">
+      <img class="wait-logo" src="assets/gilded-five-logo.svg" width="750" height="328" alt="Gilded Five">
       <span class="chip bigchip" id="waitChip">?</span>
       <div class="title foil" style="font-size:clamp(28px,9vw,44px)" id="waitName"></div>
       <div class="muted" id="waitMsg">You're in. Waiting for the host to deal…</div>

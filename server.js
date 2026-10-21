@@ -54,6 +54,13 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/' || url.pathname === '/tv') return send(res, 200, 'text/html; charset=utf-8', read('index.html'));
     if (url.pathname === '/play') return send(res, 200, 'text/html; charset=utf-8', read('play.html'));
     if (url.pathname === '/rules.js') return send(res, 200, 'text/javascript; charset=utf-8', rulesJs());
+    const assets = {
+      '/assets/theme.css': 'text/css; charset=utf-8',
+      '/assets/phone-theme.css': 'text/css; charset=utf-8',
+      '/assets/gilded-five-mark.svg': 'image/svg+xml',
+      '/assets/gilded-five-logo.svg': 'image/svg+xml'
+    };
+    if (assets[url.pathname]) return send(res, 200, assets[url.pathname], read(url.pathname.slice(1)));
     if (url.pathname === '/api/info') return send(res, 200, 'application/json', J({ app: 'gilded-five', v: 1, lan: lanAddresses(), port: PORT }));
     if (url.pathname === '/health') return send(res, 200, 'text/plain', 'ok');
     if (url.pathname === '/qr.svg') {
