@@ -8,6 +8,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { randomInt } = require('node:crypto');
 const { WebSocketServer } = require('ws');
 const QRCode = require('qrcode');
 
@@ -19,7 +20,8 @@ const HOST_GRACE_MS = 30 * 60 * 1000;
 
 const rooms = new Map();
 
-const rand = (n, chars) => { let s = ''; for (let i = 0; i < n; i++) s += chars[Math.floor(Math.random() * chars.length)]; return s; };
+// Use cryptographically strong, unbiased codes and recovery secrets.
+const rand = (n, chars) => { let s = ''; for (let i = 0; i < n; i++) s += chars[randomInt(chars.length)]; return s; };
 const newCode = () => { let c; do { c = rand(4, CODE_CHARS); } while (rooms.has(c)); return c; };
 const cleanName = s => String(s || '').replace(/[^\p{L}\p{N} '._-]/gu, '').trim().slice(0, 14);
 const safeSend = (ws, str) => { try { if (ws && ws.readyState === 1) ws.send(str); } catch (e) {} };
@@ -143,8 +145,11 @@ wss.on('connection', ws => {
     const c = ws.ctx;
     switch (m.t) {
       case 'ping': return safeSend(ws, J({ t: 'pong' }));
-      case 'host': return onHost(ws, m);
-      case 'join': return onJoin(ws, m);
+      // The role and room are bound at the first successful handshake. Without this
+      // guard, another join/host message can abandon a seat while keeping the
+      // old room's host or phone reference pointing to the same socket.
+      case 'host': return c ? safeSend(ws, J({ t: 'err', e: 'already' })) : onHost(ws, m);
+      case 'join': return c ? safeSend(ws, J({ t: 'err', e: 'already' })) : onJoin(ws, m);
       case 'bcast':
         if (c && c.role === 'host') { c.room.lastMsg = J({ t: 'd', d: m.d }); toPhones(c.room, c.room.lastMsg); }
         return;

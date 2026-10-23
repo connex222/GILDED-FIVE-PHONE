@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests.js"
+    "test": "node tests.js",
+    "test:integration": "node tests-integration.js",
+    "test:all": "npm test && npm run test:integration"
   },
   "engines": {
     "node": ">=18"

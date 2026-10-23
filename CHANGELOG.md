@@ -66,3 +66,17 @@ Keep the roadmap's unverified items on the launch checklist: test rather than si
 - Full physical eight-phone testing, multi-home reconnection, full-match rematching and end-device benchmarking remain outstanding.
 - Added optional repeatable `qa-browser.py` test covering selected-box timeout,
   honest pot accounting, eight-seat private-state simulation and recovered reveal.
+
+## Next quality phase — 23 October 2026
+- Added automated real-network HTTP and WebSocket integration coverage for
+  eight phones, full-room rejection, host recovery, phone rejoining,
+  private-dice isolation, and unauthorized role-switch attempts.
+- New `.github/workflows/quality.yml` executes scoring and network tests on
+  `main` and pull requests, making these checks repeatable beyond one session.
+- Strengthened `server.js` room-code and host-secret generation with Node's
+  `crypto.randomInt`, avoiding predictable `Math.random` for credentials.
+- Prevented a connected host/phone from switching role or joining a second
+  seat on the same WebSocket, which previously left stale room references.
+- Added `qa-responsive.py` covering five screen widths and roll-button fit,
+  including 320px phones and 4K TV sizes; preserved reduced-motion testing.
+- Physical eight-phone/multi-home tests still require a real games-night run.

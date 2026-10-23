@@ -156,3 +156,36 @@ If Python is installed, install the separate Playwright testing tool and its
 Chromium browser, then run: python qa-browser.py. This checks timeout choice,
 chip-pool accounting, eight private hands and reveal recovery. Playwright is
 only a test tool, never an app dependency.
+
+QUALITY CHECKS (OPTIONAL, FOR TECHNICAL HOSTS)
+----------------------------------------------
+From the project folder, after installing the Node packages with npm ci:
+    npm run test:all
+This runs the offline scoring / 600,000-dice fairness checks AND a real local
+HTTP + WebSocket test. The relay test starts its own disposable server,
+creates a temporary room, connects eight simulated phones, checks the ninth
+phone is refused, tests private dice messages, disconnection/rejoining, and
+verifies that a returning TV host retains the room and its connected phones.
+Nothing connects to your live Render games or anyone else's rooms.
+
+The same automated tests run in GitHub Actions on updates to the main branch.
+Open the repository's Actions tab to check the green passing tick before a
+real game night. Test failures prevent a clean QA sign-off but do not by
+themselves stop automatic Render deployments; configure branch protections
+separately if you want that extra safeguard.
+
+Optional display checks (require Python Playwright and Chromium):
+    python qa-browser.py
+    python qa-responsive.py
+They exercise screen widths 320, 390, 768, 1920 and 3840 pixels, in reduced-
+motion mode, and test choice lock-in/reveal recovery. Browser tests are not
+part of the default GitHub workflow because they require Chromium installation.
+
+ROOM PRIVACY
+------------
+New four-letter room codes and host recovery keys use secure Node random
+numbers. The server binds each connection to one role and one room; a phone
+cannot promote itself into the TV host, or join another seat without first
+opening a fresh connection. Only the host can route an individual player's
+private dice to that player's registered phone. Room codes are for informal
+private party play; they are not a substitute for account authentication.
