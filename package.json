@@ -1,9 +1,17 @@
 {
   "name": "gilded-five-phones",
   "version": "1.0.0",
-  "description": "Gilded Five: TV table with phone controllers",
+  "description": "Gilded Five Premium: simultaneous TV-and-phone dice party game",
   "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "engines": { "node": ">=18" },
-  "dependencies": { "qrcode": "^1.5.4", "ws": "^8.18.0" }
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  }
 }

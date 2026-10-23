@@ -42,7 +42,7 @@ function rulesJs() {
   if (a < 0 || b < 0) throw new Error('rules markers missing in index.html');
   const body = html.slice(a + 15, b);
   return 'window.Rules=(function(){' + body +
-    '\nreturn {CATS,UPPER,LOWER,CAT,counts,sum,isFive,rawScore,turnOptions,multOf,playerOptions,cardUpper,cardTotals,totals,setHouse,ptsLabel,rollLimit};})();';
+    '\nreturn {CATS,UPPER,LOWER,CAT,counts,sum,isFive,rawScore,turnOptions,multOf,playerOptions,cardUpper,cardTotals,totals,setHouse,setGoldDie,setUpperTarget,ptsLabel,rollLimit,handOfRound};})();';
 }
 function send(res, code, type, body) {
   res.writeHead(code, { 'Content-Type': type, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
@@ -55,14 +55,14 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/play') return send(res, 200, 'text/html; charset=utf-8', read('play.html'));
     if (url.pathname === '/rules.js') return send(res, 200, 'text/javascript; charset=utf-8', rulesJs());
     const assets = {
-      '/assets/theme.css': 'text/css; charset=utf-8',
-      '/assets/phone-theme.css': 'text/css; charset=utf-8',
       '/assets/gilded-five-mark.svg': 'image/svg+xml',
-      '/assets/gilded-five-logo.svg': 'image/svg+xml'
+      '/assets/gilded-five-brand.svg': 'image/svg+xml',
+      '/assets/liberation-serif.woff2': 'font/woff2',
+      '/assets/lato-regular.woff2': 'font/woff2'
     };
-    if (assets[url.pathname]) return send(res, 200, assets[url.pathname], read(url.pathname.slice(1)));
+    if (assets[url.pathname]) {if(url.pathname.endsWith('.woff2')) {res.writeHead(200,{'Content-Type':assets[url.pathname],'Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff'});return res.end(read(url.pathname.slice(1)));}return send(res, 200, assets[url.pathname], read(url.pathname.slice(1)));}
     if (url.pathname === '/api/info') return send(res, 200, 'application/json', J({ app: 'gilded-five', v: 1, lan: lanAddresses(), port: PORT }));
-    if (url.pathname === '/health') return send(res, 200, 'text/plain', 'ok');
+    if (url.pathname === '/health' || url.pathname === '/wake') return send(res, 200, 'text/plain', 'ok');
     if (url.pathname === '/qr.svg') {
       const t = (url.searchParams.get('t') || '').slice(0, 300);
       if (!t) return send(res, 400, 'text/plain', 'missing t');
@@ -133,11 +133,13 @@ function onJoin(ws, m) {
 }
 
 wss.on('connection', ws => {
-  ws.isAlive = true; ws.ctx = null;
+  ws.isAlive = true; ws.ctx = null;ws.msgWindow=Date.now();ws.msgCount=0;
   ws.on('pong', () => { ws.isAlive = true; });
   ws.on('message', raw => {
     let m; try { m = JSON.parse(raw.toString()); } catch (e) { return; }
     if (!m || typeof m.t !== 'string') return;
+    const now=Date.now();if(now-ws.msgWindow>1000){ws.msgWindow=now;ws.msgCount=0;}
+    if(++ws.msgCount>30)return;
     const c = ws.ctx;
     switch (m.t) {
       case 'ping': return safeSend(ws, J({ t: 'pong' }));
@@ -145,6 +147,9 @@ wss.on('connection', ws => {
       case 'join': return onJoin(ws, m);
       case 'bcast':
         if (c && c.role === 'host') { c.room.lastMsg = J({ t: 'd', d: m.d }); toPhones(c.room, c.room.lastMsg); }
+        return;
+      case 'private':
+        if(c && c.role==='host') { const dest=c.room.phones.get(String(m.id||''));if(dest)safeSend(dest.ws,J({t:'priv',d:m.d})); }
         return;
       case 'kick':
         if (c && c.role === 'host') { const p = c.room.phones.get(String(m.id)); if (p) { dropPhone(c.room, p, 'kicked'); sendRoster(c.room); } }

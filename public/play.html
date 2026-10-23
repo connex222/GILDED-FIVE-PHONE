@@ -36,7 +36,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold-hi);outlin
   background:radial-gradient(circle,var(--c) 0 50%,rgba(255,255,255,.85) 51% 54%,var(--c) 55%);
   border:.2em dashed rgba(255,255,255,.9);box-shadow:0 0 0 .08em var(--c),0 2px 4px rgba(0,0,0,.5);
   color:#fff;font-weight:800;font-size:1em;text-shadow:0 1px 2px rgba(0,0,0,.7)}
-.c0{--c:#c62828}.c1{--c:#1565c0}.c2{--c:#262626}.c3{--c:#6a1b9a}.c4{--c:#e65100}.c5{--c:#00796b}.c6{--c:#ad1457}.c7{--c:#7a5c00}
+.c0{--c:#ae3830}.c1{--c:#ad832b}.c2{--c:#174b33}.c3{--c:#966547}.c4{--c:#7b412d}.c5{--c:#23795b}.c6{--c:#9f514f}.c7{--c:#6b642b}
 .btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border-radius:999px;border:2px solid var(--gold-pale);
   font-family:Didot,"Bodoni 72","Bodoni MT",Georgia,serif;font-weight:700;font-size:1.25em;color:var(--ink);
   background:linear-gradient(180deg,#fff2c0,#ffd86b 28%,#d4af37 64%,#9c7a18);box-shadow:0 4px 0 #6e5310,0 8px 18px rgba(0,0,0,.4)}
@@ -179,8 +179,78 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
 .award .w b{color:var(--cream)}
 @media (max-height:640px){.msg{min-height:1.6em;padding-top:8px}.tray{padding-top:8px}.turnbar{padding:5px}}
 @media (prefers-reduced-motion: reduce){.die.rolling,.turnbar.mine,.house.new,.opt.glow{animation:none}}
+
+
+/* Prior refinements consolidated into the single HTML source. */
+/* Gilded Five phone-controller visual refresh · matches the host */
+:root{--felt:#103f3b;--felt-hi:#1d6958;--felt-deep:#06191e;--sticky:#0e3230;--gold:#e5b058;--gold-hi:#ffdf99;--gold-lo:#8d5a2a;--gold-pale:#fff0c6;--cream:#f5f8f3;--cream-dim:#d2ded9;--cream-faint:#92aaa6;--ink:#202014;--line:rgba(238,191,110,.44);--line-soft:rgba(238,191,110,.18)}
+html,body{background:#06191e;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+#app{background:radial-gradient(ellipse at 50% 0,#246b5b7a,transparent 60%),radial-gradient(ellipse at 100% 95%,#0f45477a,transparent 65%),linear-gradient(145deg,#0d3132,#071b22 75%)}
+#scrJoin .center{max-width:475px;justify-content:center;gap:12px;overflow-y:auto;padding-block:20px}
+.phone-logo{display:block;max-width:min(91%,350px);height:auto;margin:0 auto -7px;filter:drop-shadow(0 12px 22px #0008)}
+#scrJoin .tag{font-family:Georgia,serif;font-style:italic;color:#f7dfb1;letter-spacing:.05em}
+.join-kicker{font-size:11px;letter-spacing:.22em;color:#eebd73;text-align:center;text-transform:uppercase;font-weight:800}
+#joinForm{flex:0 0 auto;width:100%;background:#071f26cc;border:1px solid #eabd764d;border-radius:22px;padding:19px!important;margin-top:8px;box-shadow:0 18px 44px #0006}
+.field{gap:8px}.field label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#f2c782}
+.field input{background:#092b32;border:1px solid #d9b97880;color:#fff;border-radius:13px;min-height:58px}
+.field input:focus{border-color:#ffe0a0}
+.field input.code{font-weight:900;letter-spacing:.36em;background:#173c3d}
+.field input::placeholder{color:#97b5b0}
+.btn{border-radius:15px;font-family:Inter,system-ui,sans-serif;text-transform:uppercase;font-weight:900;letter-spacing:.04em;background:linear-gradient(170deg,#fff4d0,#ffda81 30%,#e3a33b 78%,#b8712d);border:1px solid #fff0be;box-shadow:0 4px 0 #764919,0 10px 22px #0008;color:#211c12}
+.btn:hover:not(:disabled){filter:brightness(1.05)}
+.btn.alt{border-radius:14px;border:1px solid #dcb77674;background:#103235;color:#ffe09b;box-shadow:none}
+.gbar{padding:10px 13px;gap:8px;min-height:65px;background:#061c23ec;border-bottom:1px solid #d7ab6373;box-shadow:0 6px 26px #0004}
+.gbar .nm{font-weight:850;font-size:16px}.gbar .sub{color:#c2d5ce}.gbar .scores{border:1px solid #e4bd7970;background:#153d3c;color:#ffdf9d;border-radius:12px;min-height:44px;padding:0 11px}
+.turnbar{border-radius:12px;border:1px solid #d6af6b77;background:#10393d;font-size:13px;padding:11px 8px;margin-top:9px}
+.turnbar.mine{background:linear-gradient(160deg,#fff1c6,#e4ae56);color:#142720}
+.tray{position:relative;border-radius:20px;margin:9px 12px 3px;padding:calc(var(--d)*.22) 3px calc(var(--d)*.18);gap:clamp(5px,2vw,10px);background:radial-gradient(ellipse at center,#2d67594d,transparent 80%)}
+.msg{padding:9px 14px 6px;min-height:2.3em;color:#dce5de}
+.actions{gap:9px;padding:0 13px 10px}
+.hintb{height:61px;width:66px;border-radius:14px;border:1px solid #eec98496;background:#163b3c;color:#ffe1a1}
+.rollb{min-height:61px;font-size:1.18em}
+.tabs{gap:9px;padding:5px 13px 9px}.tabs button{border-radius:12px;border:1px solid #ba9d647a;background:#0d3032;color:#f0f5ec;font-size:13px;min-height:48px}
+.tabs button[aria-pressed=true]{background:linear-gradient(155deg,#f8dea4,#cf9647);color:#18271e;border-color:#ffe6a7}
+.panel{margin:0 10px 10px;border-radius:16px;background:#061d24de;border:1px solid #bd9a5a75;padding:9px;box-shadow:inset 0 1px 0 #fff1}
+.orow{border-bottom:1px solid #c7ac721b;padding:3px 0 7px}.orow .ol{font-size:14px}.orow .ol small{color:#e5be7f}
+.opt{border-radius:12px;border:1px solid #e6b76d94;background:#d8ad5230;color:#ffe0a3;min-height:50px}
+.opt.best{box-shadow:0 0 0 2px #fada8d,0 0 16px #f9c25b5e}
+.sect{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:#e8be7e;margin:12px 0 7px}
+.card thead th,.card tr.sub td,.card tr.sub th{color:#f4cb84}
+.card tr.tot td,.card tr.tot th{color:#ffdf98}
+.pill,.rank{background:#123836;border:1px solid #dbb6744d}
+.sheet{background:#031217e8;backdrop-filter:blur(14px)}
+.sheet .box{border:1px solid #e2bd7a83;border-radius:24px;background:radial-gradient(ellipse at 50% 0,#1a5749,#0b2c30 52%,#081d24);box-shadow:0 25px 65px #0008}
+.sheet h2{font-family:Georgia,serif;color:#ffda8f}
+.betbox,.hiroll{background:#092b2fbf;border:1px dashed #e4b86c}
+.powers .pw{background:#e3b45a25;border:1px solid #e6b66b;border-radius:12px}
+.house{border-radius:12px;background:#f8eacb}
+#scrWait .center{background:#092a30b0;border:1px solid #dbb7733e;border-radius:24px;max-width:400px;max-height:460px;flex:none;margin:auto;padding:25px 18px;box-shadow:0 15px 50px #0007}
+#scrWait .title{font-family:Georgia,serif;font-size:34px}
+@media(max-width:380px){.gbar{padding:8px}.gbar .scores{font-size:12px;padding:0 8px}.tray{margin-left:6px;margin-right:6px}.actions,.tabs{padding-left:10px;padding-right:10px}#joinForm{padding:14px!important}}
+@media(max-height:640px){#scrJoin .center{justify-content:flex-start}.phone-logo{max-width:215px}#joinForm{padding:12px!important;margin-top:1px}}
+@media(prefers-reduced-motion:reduce){.turnbar.mine,.die.rolling,.opt.glow{animation:none}}
+
+.wait-logo{display:block;width:min(70%,230px);height:auto;margin:-5px auto 2px;filter:drop-shadow(0 6px 12px #0007)}
+
+@font-face{font-family:GFSerif;src:url('assets/liberation-serif.woff2') format('woff2');font-display:swap}
+@font-face{font-family:GFSans;src:url('assets/lato-regular.woff2') format('woff2');font-display:swap}
+html,body,button,input{font-family:GFSans,Arial,sans-serif}
+.foil,.title,.btn{font-family:GFSerif,Georgia,serif}
+.center{max-width:420px;min-width:0}
+.field{width:100%;min-width:0}.field input{display:block;box-sizing:border-box;min-width:0;width:100%;max-width:100%}
+.field input.code{padding-left:8px;letter-spacing:.22em;font-size:clamp(22px,7vw,30px)}
+#joinForm{min-width:0;width:100%}#joinForm .field{width:100%}
+.phone-logo,.wait-logo{max-width:min(100%,380px);height:auto}
+.die.gold-die{background:radial-gradient(circle at 27% 24%,#fff2aa,#d6a12f 60%,#996720);border:2px solid #ffebaa}
+.die.gold-die .pip{background:radial-gradient(circle at 35% 25%,#1d6b3d,#092c1d 70%)}
+.lockb{margin:4px 12px 6px;width:calc(100% - 24px);min-height:58px;background:linear-gradient(180deg,#ffecba,#edc25c,#ba8324)}
+.sim-selected{padding:0 16px 6px;min-height:0;text-align:center;font-size:13px;color:#fbe3a3;font-weight:bold}
+.captain-presets{display:flex;gap:4px;margin:8px 0}.captain-presets button{flex:1;min-height:42px;border-radius:9px;border:1px solid #be9a4c;background:#0a2f20;color:#f7db8f;padding:5px;font-size:11px;font-weight:bold}.captain-presets button[aria-pressed=true]{background:#e0b757;color:#10261b}.cap-toggle{display:flex;align-items:center;gap:8px;justify-content:space-between;margin:12px 0}.cap-toggle input{width:22px;height:22px}.cap-toggle select{padding:7px;background:#082b1d;color:#f7db8f;border:1px solid #a78b50}.captain-box{padding:15px;border:2px solid #e7b858;border-radius:14px;background:#163a2d}
+@media(max-width:360px){.actions{gap:5px;padding:0 8px 7px}.rollb{font-size:1.1em}.tray{gap:6px;padding-left:7px;padding-right:7px}.btn{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.die,.turnbar,.opt{animation:none!important;transition:none!important}}
+
 </style>
-<link rel="stylesheet" href="assets/phone-theme.css">
+
 </head>
 <body>
 <div id="app">
@@ -190,7 +260,7 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
   <section class="screen" id="scrJoin" hidden>
     <div class="center">
       <div class="join-kicker">Your seat at the table awaits</div>
-      <img class="phone-logo" src="assets/gilded-five-logo.svg" width="750" height="328" alt="Gilded Five">
+      <img class="phone-logo" src="assets/gilded-five-brand.svg" width="750" height="270" alt="Gilded Five">
       <div class="tag">All that glitters rolls.</div>
       <form id="joinForm" class="center" style="padding:0;gap:12px" autocomplete="off">
         <div class="field"><label for="inCode">Room code (shown on the TV)</label>
@@ -206,12 +276,12 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
   <!-- waiting / lobby -->
   <section class="screen" id="scrWait" hidden>
     <div class="center" style="text-align:center">
-      <img class="wait-logo" src="assets/gilded-five-logo.svg" width="750" height="328" alt="Gilded Five">
+      <img class="wait-logo" src="assets/gilded-five-brand.svg" width="750" height="270" alt="Gilded Five">
       <span class="chip bigchip" id="waitChip">?</span>
       <div class="title foil" style="font-size:clamp(28px,9vw,44px)" id="waitName"></div>
       <div class="muted" id="waitMsg">You're in. Waiting for the host to deal…</div>
       <div class="plist me" id="waitList"></div>
-      <button class="btn alt" type="button" id="btnLeave1">Leave</button>
+      <div id="captainBox" class="captain-box" hidden><b>TABLE CAPTAIN</b><p>Set the table here, then deal everyone in.</p><div class="captain-presets" id="capPresets"><button data-cap-preset="classic" type="button">Classic</button><button data-cap-preset="family" type="button">Family Night</button><button data-cap-preset="stakes" type="button">High Stakes</button></div><label class="cap-toggle"><input id="capSim" type="checkbox"> Everyone rolls together</label><label class="cap-toggle"><input id="capMirror" type="checkbox"> Mirror Roll</label><label class="cap-toggle">Timer <select id="capTimer"><option value="0">Off</option><option value="45">45 seconds</option><option value="60">60 seconds</option><option value="90">90 seconds</option></select></label><div class="captain-presets" id="capBots"><button type="button" data-cap-bot="easy">+ Easy bot</button><button type="button" data-cap-bot="medium">+ Medium bot</button><button type="button" data-cap-bot="hard">+ Hard bot</button></div><button type="button" id="capPass" class="btn alt">Pass captain to next phone</button><button class="btn" id="captainDeal" type="button">Deal everyone in</button></div><button class="btn alt" type="button" id="btnLeave1">Leave</button>
     </div>
   </section>
 
@@ -220,7 +290,7 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
     <header class="gbar">
       <span class="chip" id="meChip">?</span>
       <div class="who"><div class="nm" id="meName"></div><div class="sub" id="meSub"></div></div>
-      <button class="scores shakeb" id="btnShake" type="button" aria-pressed="false" aria-label="Shake to roll">📳 Shake</button>
+      <button class="scores shakeb" id="btnShake" type="button" aria-pressed="false" aria-label="Shake to roll">Shake</button>
       <button class="scores" id="btnScores" type="button">Scores</button>
     </header>
     <div class="turnbar" id="turnbar"></div>
@@ -235,6 +305,7 @@ table.card{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums
       <div class="betbox" id="betBox" hidden></div>
       <div class="powers" id="powers" hidden></div>
       <button class="btn alt undo" id="btnUndo" type="button" hidden>Undo my last score</button>
+      <button type="button" id="btnLock" class="btn lockb" hidden>LOCK IN YOUR HAND</button><div id="simSelected" class="sim-selected"></div>
       <div class="tabs" id="tabs">
         <button type="button" data-tab="score" aria-pressed="true">Score it</button>
         <button type="button" data-tab="card" aria-pressed="false">My card</button>
@@ -271,6 +342,7 @@ const qs = new URLSearchParams(location.search);
 const cleanCode = s => String(s || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
 let code = cleanCode(qs.get('c')) || cleanCode(LS.get('gf.code', ''));
 let myName = LS.get('gf.name', '');
+let privateTurn = null;
 let ws = null, joined = false, hostOn = false, data = null, retry = 0, retryT = 0, pingT = 0, wantOn = false;
 let tab = 'card', pendingKey = null, lockUntil = 0, shuffleT = 0, pmode = null, betAmt = 1;
 let prev = { myTurn: false, roll: 0, rolling: false, cur: -1, phase: '', rule: null, betId: null };
@@ -317,7 +389,8 @@ function onMsg(m) {
   } else if (m.t === 'kicked') { showJoin('You were removed from the table.'); try { ws && ws.close(); } catch (e) {} }
   else if (m.t === 'left') showJoin('The table was closed.');
   else if (m.t === 'host') { hostOn = !!m.on; render(); }
-  else if (m.t === 'd') { data = m.d; render(); }
+  else if (m.t === 'd') { data = m.d; if (!data?.S?.sim?.on)privateTurn=null; render(); }
+  else if (m.t === 'priv') { privateTurn=m.d; render(); }
 }
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && wantOn && (!ws || ws.readyState > 1)) { retry = 0; connect(); }
@@ -335,6 +408,13 @@ $('#joinForm').addEventListener('submit', e => {
 $('#inCode').addEventListener('input', e => { e.target.value = cleanCode(e.target.value); });
 function leave() { send({ t: 'leave' }); LS.set('gf.live', false); data = null; showJoin(''); try { ws && ws.close(); } catch (e) {} }
 $('#btnLeave1').onclick = leave;
+$('#captainDeal').onclick = () => send({t:'a',a:{a:'captainDeal'}});
+$('#capPresets').addEventListener('click',e=>{const b=e.target.closest('[data-cap-preset]');if(b)send({t:'a',a:{a:'captainSet',preset:b.dataset.capPreset}})});
+$('#capBots').addEventListener('click',e=>{const b=e.target.closest('[data-cap-bot]');if(b)send({t:'a',a:{a:'captainBot',level:b.dataset.capBot}})});
+$('#capSim').onchange=e=>send({t:'a',a:{a:'captainSet',simultaneous:e.target.checked}});
+$('#capMirror').onchange=e=>send({t:'a',a:{a:'captainSet',mirror:e.target.checked}});
+$('#capTimer').onchange=e=>send({t:'a',a:{a:'captainSet',timer:Number(e.target.value)}});
+$('#capPass').onclick=()=>send({t:'a',a:{a:'captainPass'}});
 
 /* ---------- rendering ---------- */
 function render() {
@@ -345,6 +425,8 @@ function render() {
 function renderWait() {
   show('scrWait');
   const mine = data && data.players ? data.players.find(p => p.id === myId) : null;
+  $('#captainBox').hidden=!(data && data.captain===myId);
+  if(data?.settings){const cfg=data.settings;$('#capSim').checked=!!cfg.simultaneous;$('#capMirror').checked=!!cfg.mirror;$('#capTimer').value=String(cfg.timer||0);$$('#capPresets button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.capPreset===cfg.preset?'true':'false'));}
   $('#waitChip').className = 'chip bigchip c' + (mine ? mine.color : 0);
   $('#waitChip').textContent = initial(myName);
   $('#waitName').textContent = myName;
@@ -386,7 +468,7 @@ let dieEls = [];
 function buildDice() {
   const tray = $('#tray'); tray.innerHTML = '';
   for (let i = 0; i < 5; i++) {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'die'; b.dataset.i = i;
+    const b = document.createElement('button'); b.type = 'button'; b.className = i === 4 ? 'die gold-die' : 'die'; b.dataset.i = i;
     tray.appendChild(b);
   }
   dieEls = $$('.die', tray);
@@ -410,13 +492,17 @@ function setFace(el, v) {
 
 function renderGame() {
   show('scrGame');
-  const S = data.S, U = data.ui || {};
-  R.setHouse(S.rule);
-  const me = S.players.findIndex(isMe);
+  const original = data.S, U = data.ui || {};
+  R.setHouse(original.rule);R.setGoldDie(original.gold !== false);R.setUpperTarget(original.short ? 30 : 63);
+  const me = original.players.findIndex(isMe);
+  const liveSim=!!original.sim?.on;
+  const turn=liveSim && privateTurn?.round===original.round && privateTurn?.seat===me ? privateTurn : null;
+  const S=liveSim ? {...original,current:Math.max(0,me),rollNum:turn?.rollNum||0,dice:turn?.dice||[1,1,1,1,1],held:turn?.held||[false,false,false,false,false],extra:0,bet:null} : original;
   const play = S.phase === 'play';
   const cur = S.players[S.current];
   const ourTurn = play && me >= 0 && S.current === me;
-  const myGo = ourTurn && cur.sid === myId, myTurn = myGo && !U.replay;
+  const myGo = ourTurn && cur.sid === myId && (!liveSim || (S.sim.stage==='rolling' && !!turn && !turn.locked));
+  const myTurn = myGo && !U.replay && (!liveSim || !turn.chosenBox);
   const partnerTurn = ourTurn && cur.sid !== myId;
   const mine = me >= 0 ? S.players[me] : null;
   const myMember = mine && mine.team ? mine.team.find(m => m.sid === myId) : null;
@@ -427,8 +513,8 @@ function renderGame() {
   const hc = $('#meChip'); hc.className = 'chip c' + (myMember ? myMember.color : mine ? mine.color : 2); hc.textContent = initial(myMember ? myMember.name : mine ? mine.name : myName);
   $('#meName').textContent = mine ? mine.name : myName + ' (watching)';
   const T = S.players.map(p => R.totals(p));
-  $('#meSub').textContent = (play ? `Round ${S.round} of ${13 * S.ncols}` : 'Final scores') + (mine ? ` · ${T[me].grand} pts` : '') +
-    (play && tokens ? ` · 🍀 ${tokens} lucky roll${tokens === 1 ? '' : 's'}` : '') + (S.chipsOn && mine ? ` · 🪙 ${mine.chips || 0}` : '');
+  $('#meSub').textContent = (play ? `${liveSim?'Round':'Turn'} ${S.round} of ${(S.short?7:13) * S.ncols}` : 'Final scores') + (mine ? ` · ${T[me].grand} pts` : '') +
+    (play && tokens ? ` · Lucky  ${tokens} lucky roll${tokens === 1 ? '' : 's'}` : '') + (S.chipsOn && mine ? ` · Chips  ${mine.chips || 0}` : '');
 
   /* house rule strip */
   const hs = $('#house');
@@ -457,12 +543,12 @@ function renderGame() {
   /* turn bar */
   const tb = $('#turnbar');
   tb.className = 'turnbar' + (myTurn ? ' mine' : partnerTurn ? ' team' : '');
-  tb.textContent = U.replay ? 'Instant replay on the TV' : myTurn ? (cur.team ? 'YOUR TURN FOR THE TEAM' : 'YOUR TURN') : partnerTurn ? `${rollerOf(cur)} rolls for your team` : `${cur.name}'s turn`;
+  tb.textContent = liveSim ? (S.sim.stage==='reveal'?'THE BIG REVEAL':S.sim.stage==='settled'?'ROUND COMPLETE':turn?.locked?'LOCKED IN — WAIT FOR EVERYONE':turn?.chosenBox?'CHOOSE LOCK IN OR CHANGE':'YOUR PRIVATE DICE') : U.replay ? 'Instant replay on the TV' : myTurn ? (cur.team ? 'YOUR TURN FOR THE TEAM' : 'YOUR TURN') : partnerTurn ? `${rollerOf(cur)} rolls for your team` : `${cur.name}'s turn`;
 
   /* dice */
   const idle = S.rollNum === 0 && !U.rolling;
   const sg = U.suggest && U.suggest.keep;
-  const picking = !!(pmode && pmode.i == null && pmode.k !== 'freeze');
+  const picking = !!(pmode && pmode.i == null && true);
   const canTap = myTurn && !U.rolling && S.rollNum > 0 && (S.rollNum < lim || lucky || picking);
   clearInterval(shuffleT);
   dieEls.forEach((el, i) => {
@@ -485,22 +571,29 @@ function renderGame() {
   rb.disabled = !(myTurn && !U.rolling && (S.rollNum < lim || lucky));
   rb.classList.toggle('lucky', lucky && !U.rolling);
   rb.textContent = U.replay ? 'Instant replay…' : !myTurn ? (me < 0 ? 'Watching' : `${rollerOf(cur)} is playing`) : U.rolling ? 'Rolling…' : S.rollNum === 0 ? 'Roll dice' :
-    S.rollNum < lim ? `Roll again (${lim - S.rollNum} left)` : lucky ? `🍀 Lucky roll (${tokens} left)` : 'Pick a score';
-  $('#btnHint').disabled = !(myTurn && !U.rolling && S.rollNum > 0);
-  $('#btnHint').hidden = me < 0;
-  $('#btnUndo').hidden = !(me >= 0 && U.undoBy === me && !myTurn);
+    S.rollNum < lim ? `Roll again (${lim - S.rollNum} left)` : lucky ? `Lucky  Lucky roll (${tokens} left)` : 'Pick a score';
+  $('#btnHint').disabled = !(myTurn && !U.rolling && S.rollNum > 0) || liveSim;
+  $('#btnHint').hidden = me < 0 || liveSim;
+  $('#btnUndo').hidden = liveSim || !(me >= 0 && U.undoBy === me && !myTurn);
   $('#tabs').hidden = me < 0;
-  renderBet(S, me, myTurn, mine);
-  renderPowers(S, U, myTurn, mine);
-  $('.actions').hidden = !myTurn && !$('#betBox').hidden;
-  $('#btnShake').hidden = me < 0;
+  if(liveSim){$('#betBox').hidden=!(S.chipsOn && S.sim.stage==='rolling' && turn && turn.rollNum===0 && !turn.bet && (mine.chips||0)>0);
+    if(!$('#betBox').hidden)$('#betBox').innerHTML='<b>Back yourself for Hand of the Round</b><button class="btn alt" type="button" id="simBet" data-simbet="1">Bet 1 chip · pays 3:1</button>';
+    $('#powers').hidden=true;}else{renderBet(S, me, myTurn, mine);renderPowers(S, U, myTurn, mine);}
+  $('.actions').hidden = liveSim ? !myTurn : (!myTurn && !$('#betBox').hidden);
+  $('#btnShake').hidden = me < 0 || !window.isSecureContext || !('DeviceMotionEvent' in window);
   if (picking) m.textContent = pmode.k === 'reroll' ? 'Tap the die you want to re-roll' : 'Tap the die you want to nudge';
 
   /* panel */
   $$('#tabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.tab === tab ? 'true' : 'false'));
-  if (me < 0) renderStandings($('#panel'), S, T);
-  else if (tab === 'score') renderOptions(S, U, me, myTurn);
-  else renderCard(S, me, T);
+  $('#btnLock').hidden=!(liveSim && S.sim.stage==='rolling' && turn?.chosenBox && !turn.locked);
+  if(liveSim && turn?.chosenBox && !turn.locked) { const o=R.playerOptions(S.players[me],turn.dice).find(x=>x.key===turn.chosenBox);
+    $('#simSelected').textContent=o?`Selected: ${R.CAT[o.cat].label} · ${o.val*o.mult} points. Lock to commit or select another box.`:''; }
+  else $('#simSelected').textContent=liveSim && turn?.locked?'Locked in. Awaiting the rest of the table.':'';
+  if(me<0)renderStandings($('#panel'),S,T);
+  else if(liveSim && S.sim.stage!=='rolling'){$('#panel').innerHTML='<div class="empty">The TV is revealing the hands. Scores update when the round ends.</div>';}
+  else if(liveSim && turn?.locked){$('#panel').innerHTML='<div class="empty">Your hand is locked. Everyone will see the reveal together.</div>';}
+  else if(tab==='score')renderOptions(S,U,me,myTurn || !!(liveSim && turn?.chosenBox));
+  else renderCard(S,me,T);
 }
 
 function renderBet(S, me, myTurn, mine) {
@@ -508,7 +601,7 @@ function renderBet(S, me, myTurn, mine) {
   if (!S.chipsOn || !b || me < 0 || me === S.current || S.phase !== 'play') { box.hidden = true; return; }
   box.hidden = false;
   const st = b.stakes[me], chips = mine.chips || 0;
-  let h = `<div class="bk">Side bet · 🪙 ${chips} chips · <span class="pots">Jackpot ${S.pot}</span></div><div class="bq">${esc(b.q)}</div>`;
+  let h = `<div class="bk">Side bet · Chips  ${chips} chips · <span class="pots">Jackpot ${S.pot}</span></div><div class="bq">${esc(b.q)}</div>`;
   if (st) h += `<div class="placed">You bet ${st.amt} on ${st.side === 'y' ? 'Yes' : 'No'}. Pays ${st.amt * (st.side === 'y' ? b.yes : b.no)} if right.</div>`;
   else if (!b.open) h += `<div class="note">Bets are closed for this turn.</div>`;
   else if (chips < 1) h += `<div class="note">You're out of chips. Win the jackpot with a Gilded Five!</div>`;
@@ -524,17 +617,13 @@ function renderPowers(S, U, myTurn, mine) {
   const box = $('#powers'), P = U.powers;
   const show = !!(S.chipsOn && P && myTurn && S.rollNum > 0 && !U.rolling);
   box.hidden = !show; if (!show) return;
-  const chips = mine.chips || 0, me = S.players.indexOf(mine), frozen = S.frozen || {};
+  const chips = mine.chips || 0;
   let h = '';
   if (!pmode) {
     h = Object.entries(P).map(([k, pw]) => {
-      const noTarget = k === 'freeze' && !S.players.some((x, i) => i !== me && !frozen[i]);
+      const noTarget = false;
       return `<button type="button" class="pw" data-pw="${k}"${chips >= pw.cost && !noTarget ? '' : ' disabled'}>${esc(pw.short)}<small>${pw.cost} chips</small></button>`;
     }).join('');
-  } else if (pmode.k === 'freeze') {
-    h = `<div class="ask">${esc(P.freeze.ask)}</div>` + S.players.map((x, i) => i === me || frozen[i] ? '' :
-      `<button type="button" class="pw tgt" data-tgt="${i}"><span class="chip c${x.color}">${esc(initial(x.name))}</span>${esc(x.name)}</button>`).join('') +
-      '<button type="button" class="pw x" data-pwx="1">Cancel</button>';
   } else if (pmode.k === 'nudge' && pmode.i != null) {
     const v = S.dice[pmode.i];
     h = `<div class="ask">Die ${pmode.i + 1} shows ${v}</div>` +
@@ -596,13 +685,32 @@ function renderStandings(el, S, T) { el.innerHTML = standingsHtml(S, T); }
 function hiRollHtml(S) {
   if (!S.chipsOn || S.players.length < 2) return '';
   const most = Math.max(...S.players.map(p => p.chips || 0)), rich = S.players.filter(p => (p.chips || 0) === most);
-  return `<div class="hiroll">🪙 High Roller: <b>${rich.map(p => esc(p.name)).join(' & ')}</b> with ${most} chips</div>`;
+  return `<div class="hiroll">Chips  High Roller: <b>${rich.map(p => esc(p.name)).join(' & ')}</b> with ${most} chips</div>`;
 }
+function awardGlyph(label) {
+  const parts = {
+    Star:'<path d="m12 2 3.2 6.7 7.4 1.1-5.4 5.2 1.3 7.3L12 18.7l-6.5 3.6 1.3-7.3L1.4 9.8l7.4-1.1z"/>',
+    Rocket:'<path d="M7 16c4-9 8-12 15-14-2 7-5 11-14 15zM7 16l-4 5 6-2M8 16l-3-3M13 7l4 4"/>',
+    Jackpot:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 3v4m0 10v4M3 12h4m10 0h4"/>',
+    Crown:'<path d="M2 8l5 4 5-8 5 8 5-4-2 12H4z"/><path d="M5 16h14"/>',
+    Spark:'<path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>',
+    Clean:'<path d="M3 21h18M5 19l9-16 4 3-8 14zM9 11l5 3"/>',
+    Paw:'<circle cx="5" cy="9" r="1.5"/><circle cx="10" cy="5" r="1.5"/><circle cx="16" cy="5" r="1.5"/><circle cx="20" cy="9" r="1.5"/><path d="M8 13q4-5 8 0l3 5q0 4-7 2-7 2-7-2z"/>',
+    Lucky:'<path d="M4 20C2 12 8 3 12 3s10 9 8 17H4zM7 14h10M12 8v10"/>',
+    Dice:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1"/><circle cx="16" cy="8" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/>',
+    Power:'<path d="m13 2-9 12h7l-1 8 10-13h-7z"/>',
+    Hint:'<path d="M8 18h8m-7 3h6m-7-6c-2-2-3-4-3-6a7 7 0 1 1 14 0c0 2-1 4-3 6l-1 2H9z"/>',
+    Ticket:'<path d="M3 5h18v5a2 2 0 0 0 0 4v5H3v-5a2 2 0 0 0 0-4zM12 6v2m0 3v2m0 3v2"/>',
+    Team:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 21v-3c0-7 14-7 14 0v3M16 15c5-1 7 2 7 6"/>'
+  };
+  return `<svg viewBox="0 0 24 24" width="27" height="27" role="presentation" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${parts[label] || parts.Star}</svg>`;
+}
+
 function awardsHtml(S) {
   if (!Array.isArray(S.awards) || !S.awards.length) return '';
   return '<div class="awards">' + S.awards.map(a => {
     const p = S.players[a.pi]; if (!p) return '';
-    return `<div class="award${isMe(p) ? ' mine' : ''}"><span class="ic" aria-hidden="true">${esc(a.icon)}</span><div>` +
+    return `<div class="award${isMe(p) ? ' mine' : ''}"><span class="ic" aria-hidden="true">${awardGlyph(a.icon)}</span><div>` +
       `<div class="t">${esc(a.title)}</div><div class="w"><b>${esc(p.name)}</b> ${esc(a.why)}</div></div></div>`;
   }).join('') + '</div>';
 }
@@ -611,9 +719,9 @@ function renderOver(S, U, me, T) {
   const top = rows[0].g, winners = rows.filter(r => r.g === top);
   const won = me >= 0 && winners.some(w => isMe(w.p));
   $('#overArea').innerHTML =
-    `<div class="champ"><div style="font-size:40px">👑</div><span class="foil">${winners.length > 1 ? "It's a tie!" : esc(winners[0].p.name)}</span>` +
+    `<div class="champ"><div style="font-size:40px">Crown</div><span class="foil">${winners.length > 1 ? "It's a tie!" : esc(winners[0].p.name)}</span>` +
     `<div>${winners.length > 1 ? winners.map(w => esc(w.p.name)).join(' & ') + ' · ' : ''}${top} points${won ? ' · you won!' : ''}</div></div>` +
-    standingsHtml(S, T) + hiRollHtml(S) + awardsHtml(S) +
+    (S.chipsOn ? `<div class="hiroll">Chips cashed in: ${S.players.map(p=>esc(p.name)+' +'+((p.chips||0)*2)).join(' · ')} points</div>` : '') + standingsHtml(S, T) + hiRollHtml(S) + awardsHtml(S) +
     (me >= 0 && U.undoBy === me ? '<button class="btn alt" style="margin-top:10px" type="button" id="btnUndo2">Undo my last score</button>' : '') +
     '<p class="muted" style="text-align:center">Waiting for the host to deal again…</p>' +
     '<button class="btn alt" style="margin-top:6px" type="button" id="btnLeave2">Leave the table</button>';
@@ -623,10 +731,12 @@ function renderOver(S, U, me, T) {
 }
 
 /* ---------- input ---------- */
+$('#btnLock').addEventListener('click',()=>{vibrate([18,40,18]);send({t:'a',a:{a:'lock'}});});
 $('#btnRoll').addEventListener('click', () => { if (Date.now() < lockUntil) return; lockUntil = Date.now() + 500; vibrate(10); send({ t: 'a', a: { a: 'roll' } }); });
 $('#btnHint').addEventListener('click', () => send({ t: 'a', a: { a: 'hint' } }));
 $('#betBox').addEventListener('click', e => {
   const a = e.target.closest('[data-amt]'), s = e.target.closest('[data-side]');
+  if(e.target.closest('[data-simbet]')) {send({t:'a',a:{a:'simBet'}});return;}
   if (a && !a.disabled) { betAmt = +a.dataset.amt; vibrate(6); render(); }
   else if (s && !s.disabled) { vibrate([10, 30, 10]); send({ t: 'a', a: { a: 'bet', side: s.dataset.side, amt: betAmt } }); }
 });
@@ -635,7 +745,7 @@ $('#powers').addEventListener('click', e => {
   if (pw && !pw.disabled) { pmode = { k: pw.dataset.pw, i: null }; vibrate(8); render(); }
   else if (x) { pmode = null; render(); }
   else if (d && !d.disabled && pmode) { send({ t: 'a', a: { a: 'power', k: 'nudge', i: pmode.i, dir: +d.dataset.dir } }); pmode = null; vibrate(14); render(); }
-  else if (t) { send({ t: 'a', a: { a: 'power', k: 'freeze', t: +t.dataset.tgt } }); pmode = null; vibrate(14); render(); }
+  else if (t) { pmode = null;render(); }
 });
 $('#btnUndo').addEventListener('click', () => send({ t: 'a', a: { a: 'undo' } }));
 $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (!b) return; tab = b.dataset.tab; pendingKey = null; render(); });
@@ -648,10 +758,10 @@ $('#panel').addEventListener('click', e => {
 });
 $('#btnScores').addEventListener('click', () => {
   if (!data || data.k !== 'game') return;
-  const S = data.S, T = S.players.map(p => R.totals(p));
-  $('#sheetBox').innerHTML = `<h2>Scores</h2>${standingsHtml(S, T)}<button class="btn alt" type="button" id="btnSheetX" style="margin-top:8px">Close</button>`;
+  const S = data.S;R.setGoldDie(S.gold!==false);R.setUpperTarget(S.short?30:63); const T = S.players.map(p => R.totals(p));
+  $('#sheetBox').innerHTML = `<h2>Scores</h2>${standingsHtml(S, T)}<button class="btn alt" type="button" id="btnSheetClose" style="margin-top:8px">Close</button>`;
   $('#sheet').hidden = false;
-  $('#btnSheetX').onclick = () => { $('#sheet').hidden = true; };
+  $('#btnSheetClose').onclick = () => { $('#sheet').hidden = true; };
 });
 $('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') $('#sheet').hidden = true; });
 
@@ -659,8 +769,8 @@ $('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') $('#sh
 let shakeOn = LS.get('gf.shake', false), motionOn = false, shakeHits = 0, lastJolt = 0;
 const shakeLive = () => shakeOn && motionOn;
 function note(text) {
-  $('#sheetBox').innerHTML = `<h2>Shake to roll</h2><p style="text-align:center;line-height:1.4">${esc(text)}</p><button class="btn alt" type="button" id="btnSheetX">OK</button>`;
-  $('#sheet').hidden = false; $('#btnSheetX').onclick = () => { $('#sheet').hidden = true; };
+  $('#sheetBox').innerHTML = `<h2>Shake to roll</h2><p style="text-align:center;line-height:1.4">${esc(text)}</p><button class="btn alt" type="button" id="btnMotionOK">OK</button>`;
+  $('#sheet').hidden = false; $('#btnMotionOK').onclick = () => { $('#sheet').hidden = true; };
 }
 async function startMotion(fromTap) {
   if (motionOn) return true;
@@ -689,7 +799,7 @@ function shakeRoll() {
   if (!shakeOn || rb.disabled || $('#scrGame').hidden || !$('#sheet').hidden) return;
   rb.click();
 }
-function syncShakeBtn() { const b = $('#btnShake'); b.setAttribute('aria-pressed', shakeLive() ? 'true' : 'false'); b.textContent = shakeLive() ? '📳 On' : '📳 Shake'; }
+function syncShakeBtn() { const b = $('#btnShake'); b.setAttribute('aria-pressed', shakeLive() ? 'true' : 'false'); b.textContent = shakeLive() ? 'On' : 'Shake'; }
 $('#btnShake').addEventListener('click', async () => {
   if (shakeLive()) { shakeOn = false; LS.set('gf.shake', false); stopMotion(); syncShakeBtn(); render(); return; }
   if (await startMotion(true)) { shakeOn = true; LS.set('gf.shake', true); vibrate([20, 40, 20]); }

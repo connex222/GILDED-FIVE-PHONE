@@ -1,11 +1,5 @@
-# Gilded Five — UI refresh (21 October 2026)
+# Gilded Five Premium — unified UI
 
-New emerald-and-gold visual identity for both TV and phone controller. Includes a gold logo in scalable SVG form, a matching five-pip crown dice emblem, responsive layouts, refined scoreboard and setup screens, modern joining and waiting screens, focus and reduced-motion rules.
+The earlier visual-only refresh has been superseded by the Premium implementation. All active host and phone CSS and JS are in `public/index.html` and `public/play.html`; the single authoritative server is `server.js`.
 
-## Code and compatibility
-
-No game rules, scoring logic or multiplayer protocol changes. New files under `public/assets/` are exposed by an exact route allowlist in `server.js`; root `assets/` is mirrored for standalone HTML use. The new logo is a scalable SVG artwork designed for crisp rendering on small and large screens.
-
-## Checks
-
-Previous preview was smoke-tested at desktop/phone widths for setup, dice, scorecard and phone join views. Live end-to-end multiplayer tests remain outstanding. Verify production Render deployment after merging.
+See `README.txt` for setup and play instructions, `CHANGELOG.md` for the implementation checklist, `tests.js` for automated regression tests and `public/assets/FONT-LICENCES.txt` for the bundled font attributions. The casino-themed blue/purple WebP logo and duplicate root HTML/CSS have been retired.
