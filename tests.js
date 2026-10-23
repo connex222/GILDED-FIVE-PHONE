@@ -90,6 +90,12 @@ for(const page of ['public/index.html','public/play.html']){
  ok(!/[\u{1F300}-\u{1FAFF}]/u.test(raw),page+' has no emoji glyphs');
  ok(!/<link\s+rel="stylesheet"/i.test(raw),page+' embeds all CSS');
 }
+ok(html.includes('if(t.chosenBox && playerOptions(p,t.dice).some(o=>o.key===t.chosenBox))'), 'timer respects a legal human box choice before lock-in');
+ok(html.includes('S.sim.pot=(S.sim.carryPot||0)+contributed'), 'round pot only contains chips actually collected');
+ok(html.includes('Engine.bestHold(t.dice,maxRolls-t.rollNum'), 'timeout AI accounts for the active roll limit');
+ok(html.includes("if(S.sim.stage==='reveal')") && html.includes("S.sim.stage='rolling';startSimReveal();"), 'pending reveal resumes after browser refresh');
+ok(html.includes("else if(S.sim.stage==='settled')") && html.includes('setTimeout(finishSettledSimRound'), 'settled round continues after browser refresh');
+ok(html.includes("!$('#setup').hidden)return;"), 'saved round timer cannot expire behind resume confirmation');
 ok(html.includes('finalCashIn();S.awards=makeAwards();'), 'chips converted before final awards on simultaneous finish');
 ok(html.includes('finalCashIn(); S.awards = makeAwards();'), 'chips converted before final awards on classic finish');
 console.log(`PASS: ${tests} scoring, fairness, accessibility and architecture checks; RNG frequencies ${freq.slice(1).join(', ')}.`);

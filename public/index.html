@@ -1778,8 +1778,10 @@ function startSimRound() {
   S.sim.mirrorDice=S.sim.mirror?[d6(),d6(),d6(),d6(),d6()]:null;
   S.sim.deadline=prefs.timer ? Date.now()+prefs.timer*1000 : 0;
   S.sim.turns=S.players.map(()=>({dice:[1,1,1,1,1],held:[false,false,false,false,false],rollNum:0,locked:false,chosenBox:null,value:null,bet:0}));
-  S.sim.pot=(S.sim.carryPot||0)+(S.chipsOn?S.players.length:0);S.sim.carryPot=0;
-  S.players.forEach((p,i)=>{if(S.chipsOn && (p.chips||0)>0) p.chips--;});
+  // Only collect chips players actually possess; empty stacks cannot create free pot chips.
+  let contributed=0;
+  if(S.chipsOn) S.players.forEach(p=>{if((p.chips||0)>0){p.chips--;contributed++;}});
+  S.sim.pot=(S.sim.carryPot||0)+contributed;S.sim.carryPot=0;
   if(S.chipsOn)S.pot++;
   if(S.rule && RULE[S.rule]) Voice.say(RULE[S.rule].say);
   S.players.forEach((p,i)=>{if(isBot(p)){
@@ -1820,18 +1822,26 @@ function simAuto(i,timedOut) {
   if(!isSim()||S.sim.stage!=='rolling')return;
   const t=S.sim.turns[i],p=S.players[i];if(!t||t.locked)return;
   if(timedOut && !isBot(p))Voice.say(`The house played for ${p.name}.`);
-  // Rules stay TV-authoritative even for forced timer moves.
-  while(t.rollNum<rollLimit({rule:S.rule,extra:0}) && !t.chosenBox) {
+  // If a player selected a legal box but was interrupted before Lock In,
+  // honour that deliberate choice rather than silently replacing it with AI advice.
+  // A timeout must never change a submitted scoring decision.
+  if(t.chosenBox && playerOptions(p,t.dice).some(o=>o.key===t.chosenBox)) {
+    simLock(i);
+    return;
+  }
+  // For unfinished hands, the house chooses and locks a legal move.
+  const maxRolls=rollLimit({rule:S.rule,extra:0});
+  while(t.rollNum<maxRolls && !t.chosenBox) {
     simRoll(i);
-    if(t.rollNum===1 || t.rollNum===2){
-      Engine.prepare(p);const b=Engine.bestHold(t.dice,3-t.rollNum,p.type==='hard');
+    if(t.rollNum<maxRolls){
+      Engine.prepare(p);const b=Engine.bestHold(t.dice,maxRolls-t.rollNum,p.type==='hard');
       if(b.stop)break;t.held=b.keep;
     }
   }
   const o=bestMove(p,t.dice);if(o){simChoose(i,o.key);simLock(i);}
 }
 function simTick() {
-  if(!isSim()||S.phase!=='play'||S.sim.stage!=='rolling')return;
+  if(!isSim()||S.phase!=='play'||S.sim.stage!=='rolling'||!$('#setup').hidden)return;
   if(S.sim.deadline && Date.now()>=S.sim.deadline) {
     S.players.forEach((p,i)=>{if(!S.sim.turns[i].locked)simAuto(i,true)});
   }
@@ -1873,13 +1883,36 @@ function settleSimRound() {
   if(S.rule==='underdog'&&rows.length>1){const low=Math.min(...rows.map(r=>r.value)); rows.filter(r=>r.value===low&&low<hi).forEach(r=>S.players[r.i].xp=(S.players[r.i].xp||0)+15);}
   S.sim.stage='settled';S.sim.winners=winners.map(r=>r.i);
   save();renderAll();Sound.bonus();
+  setTimeout(finishSettledSimRound,reduceMotion?1000:3500);
+}
+// Settlement is stored before any transition timer starts. This function is
+// intentionally safe to call again after the host browser has been reloaded.
+function finishSettledSimRound() {
+  if(!isSim()||S.sim.stage!=='settled')return;
   const target=(S.short?7:13)*S.ncols;
-  const finished=S.round>=target || S.players.every(p=>p.cards.every(card=>CATS.filter(c=>card.s[c.id]!=null).length>= (S.short?7:13)));
-  setTimeout(()=>{
-    if(!isSim()||S.sim.stage!=='settled')return;
-    if(finished){finalCashIn();S.awards=makeAwards();S.phase='over';S.rule=null;save();renderAll();setTimeout(showResults,650);return;}
-    S.round++;drawRule();startSimRound();
-  },reduceMotion?1000:3500);
+  const finished=S.round>=target || S.players.every(p=>p.cards.every(card=>CATS.filter(c=>card.s[c.id]!=null).length>=(S.short?7:13)));
+  if(finished){
+    finalCashIn();S.awards=makeAwards();S.phase='over';S.rule=null;save();renderAll();setTimeout(showResults,650);
+    return;
+  }
+  S.round++;drawRule();startSimRound();
+}
+// A refresh does not preserve JavaScript timeouts. Rebuild the pending part of
+// a simultaneous round when its host explicitly resumes a saved game.
+function resumeSimStage() {
+  if(!isSim()||S.phase!=='play')return;
+  if(S.sim.stage==='reveal') {
+    // Replay the dramatic reveal from the start. Scores have not settled yet.
+    S.sim.stage='rolling';startSimReveal();
+  } else if(S.sim.stage==='settled') {
+    setTimeout(finishSettledSimRound,reduceMotion?450:1500);
+  } else if(S.sim.stage==='rolling') {
+    stopSimTimers();
+    S.players.forEach((p,i)=>{if(isBot(p) && !S.sim.turns[i].locked)
+      simBotTimers.push(setTimeout(()=>simAuto(i,false),1200+i*480));});
+    simTick();
+  }
+  Phones.queue();
 }
 function renderSimScreen(){
   if(!isSim())return;
@@ -2734,7 +2767,9 @@ $('#btnResume').onclick = () => {
   const saved = store.get(K_GAME, null); if (!saved) return;
   applySetupToggles();
   S = saved; resetUi(); setHouse(S.rule);
-  closeOv('setup'); renderAll(); syncDiceInstant(); showBanner(); requestWake();
+  closeOv('setup'); renderAll(); syncDiceInstant();
+  if(isSim())resumeSimStage();else showBanner();
+  requestWake();
 };
 $('#btnCastHelp1').onclick = () => openOv('cast');
 $('#btnRecords1').onclick = () => openRecords();
@@ -3186,7 +3221,7 @@ syncSoundBtn();
 applyLayout();
 renderVoicePick();
 const savedGame = store.get(K_GAME, null);
-if (savedGame && savedGame.v === 2 && savedGame.phase === 'play') { S = savedGame; setGoldDie(S.gold!==false); setUpperTarget(S.short?30:63); setHouse(S.rule); renderAll(); syncDiceInstant(); if(isSim()&&S.sim.stage==='rolling')S.players.forEach((p,i)=>{if(isBot(p)&&!S.sim.turns[i].locked)simBotTimers.push(setTimeout(()=>simAuto(i,false),1700+i*500));}); }
+if (savedGame && savedGame.v === 2 && savedGame.phase === 'play') { S = savedGame; setGoldDie(S.gold!==false); setUpperTarget(S.short?30:63); setHouse(S.rule); renderAll(); syncDiceInstant();  }
 else { S = newGame([{ name: 'Seat 1', color: 0, type: 'human' }], 'classic'); renderAll(); syncDiceInstant(); S = null; }
 openSetup();
 Phones.probe();

@@ -54,3 +54,15 @@ Implementation base: attached `GILDED-FIVE.zip` and `GILDED-FIVE-PREMIUM-PLAN.md
 - 4K TV readability and mixed Android/iOS physical devices need hands-on verification before public release.
 
 Keep the roadmap's unverified items on the launch checklist: test rather than silently assuming success.
+
+## Verification follow-up — 23 October 2026
+- Verified the premium commit is live on the connected Render service, with a successful Node start and automatic deployment on `main`.
+- Fixed timer auto-lock overwriting a valid player-selected scoring box: it now locks the existing choice unchanged.
+- Fixed High Stakes round pot inflation when some seats have no chips: pot contributions now match actual debits.
+- Corrected timeout AI to use the active house-rule roll limit (two, three, or four rolls).
+- Fixed host-refresh recovery in simultaneous rounds: unfinished dramatic reveals are replayed, already-settled rounds progress without a second payout, and bot timers restart only after an explicit Resume action.
+- Prevented expired round timers from scoring in the background behind the Resume confirmation screen.
+- Extended the local test suite with guards for these fixes; a headless browser round test is documented separately.
+- Full physical eight-phone testing, multi-home reconnection, full-match rematching and end-device benchmarking remain outstanding.
+- Added optional repeatable `qa-browser.py` test covering selected-box timeout,
+  honest pot accounting, eight-seat private-state simulation and recovered reveal.

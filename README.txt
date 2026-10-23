@@ -132,3 +132,27 @@ using voice, audio and phone motion sensors.
 The UI uses no third-party scripts or web fonts. Fonts are bundled as
 WOFF2 in public/assets; see public/assets/FONT-LICENCES.txt. All game
 sounds are synthesised locally, with optional device announcer voices.
+
+VERIFICATION AND QA
+-------------------
+To check the scoring and architecture from the project folder, run npm test.
+For the phone controller, test a round with a timer and verify an already chosen
+box is locked unchanged if time runs out. In High Stakes, confirm that a seat
+with no chips contributes nothing to the round pot. These cases are covered by
+regression checks in tests.js and can also be checked in an automated browser.
+Automated simulation does NOT replace the November physical eight-phone test.
+
+REFRESH / RECONNECT
+-------------------
+If the TV browser reloads during a game, click Resume saved game on the host.
+Simultaneous games restart any incomplete reveal so scores cannot be lost. A
+previously settled round continues to the next round without re-paying the pot.
+Keep the same browser/profile for saved games; a different host has no copy of
+the saved TV state.
+
+OPTIONAL BROWSER TEST (for developers)
+--------------------------------------
+If Python is installed, install the separate Playwright testing tool and its
+Chromium browser, then run: python qa-browser.py. This checks timeout choice,
+chip-pool accounting, eight private hands and reveal recovery. Playwright is
+only a test tool, never an app dependency.
