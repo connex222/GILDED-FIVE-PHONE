@@ -8,7 +8,7 @@ const { webcrypto } = require('node:crypto');
 const html = fs.readFileSync('public/index.html', 'utf8');
 const match = html.match(/\/\*RULES-START\*\/([\s\S]*?)\/\*RULES-END\*\//);
 assert(match, 'Rules extraction markers missing');
-const R = vm.runInNewContext(`(function(){ ${match[1]} return {CATS,CAT,counts,sum,isFive,rawScore,turnOptions,playerOptions,cardUpper,cardTotals,totals,setHouse,setGoldDie,setUpperTarget,ptsLabel,rollLimit,handOfRound}; })()`);
+const R = vm.runInNewContext(`(function(){ ${match[1]} return {CATS,CAT,counts,sum,isFive,rawScore,turnOptions,playerOptions,cardUpper,cardTotals,totals,setHouse,setGoldDie,setUpperTarget,setShortGame,ptsLabel,rollLimit,handOfRound}; })()`);
 let tests=0;
 function eq(actual,expected,label){assert.equal(actual,expected,label);tests++;}
 function ok(condition,label){assert(condition,label);tests++;}
@@ -62,6 +62,19 @@ for(const [rule,cat,hand,value] of [
 R.setHouse('hot');eq(R.rollLimit({rule:'hot',extra:0}),4,'hot hand roll limit');
 R.setHouse('tight');eq(R.rollLimit({rule:'tight',extra:0}),2,'tight table roll limit');
 R.setHouse(null);
+// Short/Triple option cap: each of the three columns stops offering moves
+// once seven distinct boxes have been selected, not after thirteen.
+const firstSeven=blank();R.CATS.slice(0,7).forEach(c=>firstSeven[c.id]=0);
+R.setShortGame(true);
+const p3={cards:[{s:firstSeven,yb:0},{s:blank(),yb:0},{s:blank(),yb:0}]};
+const shortOpts=R.playerOptions(p3,[1,2,3,4,5]);
+ok(shortOpts.length>0,'Short Triple retains unplayed columns');
+ok(shortOpts.every(o=>o.c!==0),'Short Triple closes completed seven-box column');
+const justSix=blank();R.CATS.slice(0,6).forEach(c=>justSix[c.id]=0);
+const sixOpts=R.playerOptions({cards:[{s:justSix,yb:0}]},[1,2,3,4,5]);
+ok(sixOpts.length>0,'Short keeps six-box column open');
+R.setShortGame(false);
+ok(R.playerOptions({cards:[{s:firstSeven,yb:0}]},[1,2,3,4,5]).length>0,'Full still offers eighth box');
 // Total and one-winner cash conversion; High Roller only an award.
 const p=player();p.cash=24;p.xp=10;
 eq(R.totals(p).grand,34,'chip cash-in +24 plus extras');
@@ -82,6 +95,7 @@ ok(!/\bfreeze\s*:\s*\{/.test(html),'Freeze unavailable');
 ok(html.includes("delete safe.sim.turns; delete safe.sim.results"),'private dice not broadcast');
 ok(fs.readFileSync('server.js','utf8').includes("case 'private':"),'per-seat relay is present');
 ok(fs.readFileSync('public/play.html','utf8').includes('id="btnLock"'),'phone lock-in action present');
+ok(fs.readFileSync('public/play.html','utf8').includes('crypto.getRandomValues(bytes)'), 'new phone rejoin tokens use secure browser randomness');
 // Interface and packaging regressions: no duplicated IDs, retired icons, or remote dependencies.
 for(const page of ['public/index.html','public/play.html']){
  const raw=fs.readFileSync(page,'utf8');

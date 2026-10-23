@@ -80,3 +80,35 @@ Keep the roadmap's unverified items on the launch checklist: test rather than si
 - Added `qa-responsive.py` covering five screen widths and roll-button fit,
   including 320px phones and 4K TV sizes; preserved reduced-motion testing.
 - Physical eight-phone/multi-home tests still require a real games-night run.
+
+## Pre-November offline QA and reliability — 23 October 2026
+- Ran the current local Node scoring suite; added stronger Short/Triple and
+  secure phone-token checks (76 passing checks including 600,000 dice rolls).
+- Found and fixed a genuine **Short + Triple** defect: after seven boxes in a
+  column, the engine formerly allowed more scores, making a 21-turn game
+  continue to 33 turns in an automated case. Every column now closes at 7.
+  The shared phone rules and both host/phone scorecards enforce the same cap.
+- Fixed Short bonus threshold text (30 instead of 63) and visual completion
+  indicators for the seven filled boxes; improved setup/resume descriptions
+  of 7, 13, 21 and 39-turn variants.
+- Validated saved-state structure before loading; invalid browser settings,
+  records or profiles no longer crash setup. Valid saves can still Resume.
+- Improved focus/Tab/Escape management for dialog keyboard accessibility.
+- Prevented delayed result callbacks from reopening an old result after a
+  rematch has already started.
+- New phone rejoin credentials now use cryptographically secure Web Crypto
+  randomness; existing saved phone tokens continue to work.
+- Added `qa-complete.py` browser tests that finish real local Classic, Short,
+  Triple, Short Triple and High Stakes game flows and exercise rematch,
+  one-winner conversion and results. 26 checks passed locally.
+- Added `qa-usability.py` checking keyboard dialogs, saved-game resume and
+  malformed browser storage. 22 checks passed locally.
+- Re-ran the existing 36 responsive checks and private eight-seat browser
+  simulation without page errors. These are **not** physical multiplayer tests.
+- Added a plain-English November real-phone acceptance checklist to README.
+- Network integration could not be run in this container because npm
+  dependencies were not available and the package install timed out;
+  GitHub Actions is the intended CI environment for this suite. Its remote
+  check status must be inspected separately rather than claimed as passing.
+- Physical phone tests, mixed Wi-Fi/mobile networks, end-device performance,
+  long matches across devices and hosted rematches remain for November.

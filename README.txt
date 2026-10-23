@@ -63,8 +63,10 @@ playing with phones, while turn-by-turn stays available for solo or sharing
 one screen. Mirror Roll gives everyone the same FIRST roll in each round.
 Optional timers are Off, 45, 60 or 90 seconds. If a timer expires the house
 chooses a score for each unfinished player. Short Play ends after SEVEN
-scored boxes per person (choose any seven); the top bonus target is 30. Triple
-Gilded is a longer game with three columns and x1 / x2 / x3 scoring.
+scored boxes in each score column (choose any seven); the top bonus target
+is 30. Triple Gilded has three score columns with x1 / x2 / x3 scoring:
+39 turns in Full mode or 21 in Short mode. Once a Short column holds
+seven chosen boxes, its remaining boxes cannot be selected.
 
 SIMULTANEOUS ROUNDS: ROLL, CHOOSE, LOCK IN
 -----------------------------------------
@@ -174,12 +176,19 @@ real game night. Test failures prevent a clean QA sign-off but do not by
 themselves stop automatic Render deployments; configure branch protections
 separately if you want that extra safeguard.
 
-Optional display checks (require Python Playwright and Chromium):
+Optional offline browser checks (require Python Playwright and Chromium):
     python qa-browser.py
     python qa-responsive.py
-They exercise screen widths 320, 390, 768, 1920 and 3840 pixels, in reduced-
-motion mode, and test choice lock-in/reveal recovery. Browser tests are not
-part of the default GitHub workflow because they require Chromium installation.
+    python qa-complete.py
+    python qa-usability.py
+These check screens at 320, 390, 768, 1920 and 3840 pixels; five complete
+Classic/Short/Triple/High Stakes match configurations including rematch;
+accessibility of keyboard/dialog navigation; malformed saved-game recovery;
+and the private-state/reveal simulation. They never join a live room.
+If Chromium is already installed but Playwright cannot find it, use the
+GILDED_CHROMIUM environment variable to give its full executable path.
+Browser checks are not part of the default GitHub workflow because they
+require separate Chromium installation. The scoring/relay tests are CI checks.
 
 ROOM PRIVACY
 ------------
@@ -189,3 +198,39 @@ cannot promote itself into the TV host, or join another seat without first
 opening a fresh connection. Only the host can route an individual player's
 private dice to that player's registered phone. Room codes are for informal
 private party play; they are not a substitute for account authentication.
+
+PRE-NOVEMBER READINESS (23 OCTOBER 2026)
+----------------------------------------
+The following can be checked before the physical multiplayer session:
+- Offline scoring, fair randomness and original Joker rules: npm test.
+- Server HTTP/WebSocket relay: npm run test:integration (requires npm ci).
+- Complete turn-by-turn games and High Stakes cash-in: qa-complete.py.
+- Small screens, 4K sizing and reduced motion: qa-responsive.py.
+- Short Triple: 21 turns maximum, 7 selectable boxes per column.
+- Saved matches, malformed settings and keyboard dialogs: qa-usability.py.
+- Source and automation: push to GitHub main; check GitHub Actions and Render.
+
+NOVEMBER MULTIPLAYER ACCEPTANCE (NOT YET PERFORMED)
+-------------------------------------------------
+Run this on real phones; do not mistake synthetic browser tests for a pass.
+1. Open the live HTTPS game on a TV/PC; leave the host browser awake.
+2. Join with up to eight real phones (include Android and iOS if possible).
+   Try two different home internet connections as well as one shared Wi-Fi.
+3. First phone controls Table Captain; add bots, change preset, transfer the
+   crown to another connected phone and start the game.
+4. Test Classic and Family Night simultaneous rounds, Mirror Roll, the
+   optional 45-second timer, secret hands, tie reveal and next-round advance.
+5. Test High Stakes betting, chip pot conservation and +2 points per remaining
+   chip on the final scoreboard; only ONE winner may be announced.
+6. Lock/unlock a phone mid-turn, disconnect/reconnect Wi-Fi, then verify its
+   dice, selected box and original seat are restored without double scoring.
+7. Refresh the TV during a round, during the reveal and after settlement;
+   use Resume to confirm there is no duplicate Hand of the Round payout.
+8. Finish a full game, inspect awards and all scorecards, start a rematch,
+   then verify every player is present and every scorecard is empty.
+9. Check legibility from the sofa, sound/mute, keyboard-only operation,
+   reduced-motion devices, portrait phones and landscape TV layout.
+10. Record pass/fail, phone models, operating systems, connection type and
+    exact steps to reproduce any defect before approving wider release.
+
+The November session has deliberately not been counted as a completed test.

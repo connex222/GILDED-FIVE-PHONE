@@ -331,7 +331,18 @@ const LS = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
 const vibrate = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
-const rnd = n => { let s = ''; const c = 'abcdefghijklmnopqrstuvwxyz0123456789'; for (let i = 0; i < n; i++) s += c[Math.floor(Math.random() * c.length)]; return s; };
+// Reconnection tokens are bearer secrets. Generate new tokens with Web Crypto,
+// not Math.random; existing stored tokens remain valid for current players.
+const rnd = n => {
+  const chars='abcdefghijklmnopqrstuvwxyz0123456789';let out='';
+  if(crypto?.getRandomValues){
+    while(out.length<n){
+      const bytes=new Uint8Array(Math.max(16,n-out.length));crypto.getRandomValues(bytes);
+      for(const v of bytes){if(v<252)out+=chars[v%chars.length];if(out.length===n)break;}
+    }
+  }else{for(let i=0;i<n;i++)out+=chars[Math.floor(Math.random()*chars.length)];}
+  return out;
+};
 const initial = n => (String(n).trim()[0] || '?').toUpperCase();
 const isMe = p => !!p && (p.sid === myId || !!(p.team && p.team.some(m => m.sid === myId)));
 const rollerOf = p => p.team ? p.team[p.tm || 0].name : p.name;
@@ -493,7 +504,7 @@ function setFace(el, v) {
 function renderGame() {
   show('scrGame');
   const original = data.S, U = data.ui || {};
-  R.setHouse(original.rule);R.setGoldDie(original.gold !== false);R.setUpperTarget(original.short ? 30 : 63);
+  R.setHouse(original.rule);R.setGoldDie(original.gold !== false);R.setUpperTarget(original.short ? 30 : 63);R.setShortGame(original.short);
   const me = original.players.findIndex(isMe);
   const liveSim=!!original.sim?.on;
   const turn=liveSim && privateTurn?.round===original.round && privateTurn?.seat===me ? privateTurn : null;
@@ -660,11 +671,11 @@ function renderOptions(S, U, me, myTurn) {
 
 function renderCard(S, me, T) {
   const P = S.players[me], t = T[me], multi = P.cards.length > 1;
-  const cell = (card, id) => { const v = card.s[id]; return v == null ? '<td class="open">·</td>' : `<td class="v">${v}</td>`; };
+  const cell = (card, id) => { const v = card.s[id]; const shortClosed=S.short&&R.CATS.filter(c=>card.s[c.id]!=null).length>=7; return v == null ? (shortClosed?'<td class="open" aria-label="Not used in Short game">–</td>':'<td class="open">·</td>') : `<td class="v">${v}</td>`; };
   let h = '<table class="card"><thead><tr><th></th>' + P.cards.map((c, i) => `<th>${multi ? '×' + (i + 1) : P.name}</th>`).join('') + '</tr></thead><tbody>';
   const cats = list => list.map(c => `<tr><th scope="row">${esc(c.label)}</th>${P.cards.map(card => cell(card, c.id)).join('')}</tr>`).join('');
   h += cats(R.UPPER);
-  h += `<tr class="sub"><th scope="row">Top total (63 for +35)</th>${t.cols.map(c => `<td>${c.up}</td>`).join('')}</tr>`;
+  h += `<tr class="sub"><th scope="row">Top total (${S.short?30:63} for +35)</th>${t.cols.map(c => `<td>${c.up}</td>`).join('')}</tr>`;
   h += `<tr class="sub"><th scope="row">Bonus</th>${t.cols.map(c => `<td>${c.bonus ? '+35' : '·'}</td>`).join('')}</tr>`;
   h += cats(R.LOWER);
   h += `<tr class="sub"><th scope="row">Gilded bonus</th>${t.cols.map(c => `<td>${c.yb ? '+' + c.yb : '·'}</td>`).join('')}</tr>`;
@@ -758,7 +769,7 @@ $('#panel').addEventListener('click', e => {
 });
 $('#btnScores').addEventListener('click', () => {
   if (!data || data.k !== 'game') return;
-  const S = data.S;R.setGoldDie(S.gold!==false);R.setUpperTarget(S.short?30:63); const T = S.players.map(p => R.totals(p));
+  const S = data.S;R.setGoldDie(S.gold!==false);R.setUpperTarget(S.short?30:63);R.setShortGame(S.short); const T = S.players.map(p => R.totals(p));
   $('#sheetBox').innerHTML = `<h2>Scores</h2>${standingsHtml(S, T)}<button class="btn alt" type="button" id="btnSheetClose" style="margin-top:8px">Close</button>`;
   $('#sheet').hidden = false;
   $('#btnSheetClose').onclick = () => { $('#sheet').hidden = true; };

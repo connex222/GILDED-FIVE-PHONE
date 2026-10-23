@@ -816,19 +816,19 @@ body,button,input,select{font-family:GFSans,Arial,sans-serif}
       <li><b>Full House</b> — three of one number and two of another. 25 points.</li>
       <li><b>Small Straight</b> — four in a row (e.g. 2-3-4-5). 30 points.</li>
       <li><b>Large Straight</b> — five in a row. 40 points.</li>
-      <li><b>Gilded Five</b> — all five dice the same. 50 points.</li>
+      <li><b>Gilded Five</b> — all five dice the same. Scores 50 plus five times the gold die’s face, when the Gilded Die is enabled.</li>
       <li><b>Chance</b> — anything. Scores the total of all five dice.</li>
     </ul>
     <h3>Extra Gilded Fives (Joker rule)</h3>
     <p>If you already scored 50 for a Gilded Five and roll another, you get <b>+100</b>. You must then use the matching top box (e.g. five 4s → Fours) if it's open. If that's taken, any bottom box scores full points. If those are all taken, you must scratch a top box.</p>
     <h3>Triple Gilded</h3>
-    <p>Every player gets three score columns, worth <b>×1, ×2 and ×3</b>. You choose which column to use each turn, so the game lasts 39 rounds. Bonuses count per column and are multiplied too.</p>
+    <p>Every player gets three score columns, worth <b>×1, ×2 and ×3</b>. You choose which column to use each turn. Full games last 39 turns; Short games last 21 turns, with seven filled boxes allowed in each column. Bonuses count per column and are multiplied too.</p>
     <h3>House rule cards</h3>
     <p>With this switched on, a gold card is dealt at the start of each round and changes one rule for everyone: <b>Lucky Sevens</b> (ones are worth 7 in kind totals and Chance, not Aces), <b>Double Down</b> (Chance doubles), <b>Hot Hand</b> (4 rolls), <b>Tight Table</b> (2 rolls), <b>Full House Party</b> (Full House 40), <b>Straight Shooter</b> (straights +10), <b>Underdog</b> (lowest score that round gets +15) and <b>Safety Net</b> (a scratch still earns 5). Points earned under a card stay on the scorecard. Bonus points go in the <b>Extras</b> row.</p>
     <h3>Learner and Junior seats</h3>
     <p>Pick these instead of <b>Person</b> to give someone a helping hand. The best box to score in <b>glows</b> after every roll. A <b>lucky roll</b> is an extra roll they can use once their normal rolls run out (Learner 1, Junior 2). Juniors also start with <b>25 points</b>. In Triple Gilded the lucky rolls and head start are three times bigger, to match the longer game.</p>
     <h3>Chips, side bets and the jackpot</h3>
-    <p>Everyone starts with <b>10 chips</b>. Chips are separate from your score. While someone else rolls, a <b>side bet</b> appears on your phone, such as "Will Dad score more than 20 points?". Stake 1 to 3 chips on Yes or No. Bets close when the second roll starts (or at the first roll for a Gilded Five bet). Winners get their stake back multiplied by the odds shown. Lost chips go into the <b>jackpot</b>, which also grows by one chip every round. Roll a <b>Gilded Five</b> to win the lot. Whoever ends with the most chips is the <b>High Roller</b>.</p>
+    <p>Everyone starts with <b>10 chips</b>. Chips are tracked separately during play but <b>each remaining chip becomes two final points</b>, so there is one overall winner. During turn-by-turn games, other players can place side bets from their phones. Bets close when the second roll starts (or at the first roll for a Gilded Five bet). Winning payouts follow the odds shown. Lost chips grow the <b>jackpot</b>, which also gains a chip each round. A Gilded Five wins the jackpot. Most chips earns the <b>High Roller award</b>, not another victory.</p>
     <h3>Power moves</h3>
     <p>On your turn, after rolling, you can spend chips: <b>Re-roll</b> one die without using a roll (2 chips) or <b>Nudge</b> a die up or down by one (3 chips). One power move per turn. Unspent chips become two points each at the end.</p>
     <h3>Teams of two</h3>
@@ -914,9 +914,10 @@ function hasRun(c, len) { let run = 0; for (let f = 1; f <= 6; f++) { run = c[f]
 let HOUSE = null;
 function setHouse(r) { HOUSE = r || null; }
 const pipVal = f => (HOUSE === 'sevens' && f === 1 ? 7 : f);
-let GOLD_DIE = true, UPPER_TARGET = 63;
+let GOLD_DIE = true, UPPER_TARGET = 63, SHORT_GAME = false;
 function setGoldDie(on) { GOLD_DIE = on !== false; }
 function setUpperTarget(n) { UPPER_TARGET = n === 30 ? 30 : 63; }
+function setShortGame(on) { SHORT_GAME = !!on; }
 function weightedSum(d) { return d.reduce((a,v) => a + pipVal(v), 0) + (GOLD_DIE ? pipVal(d[4]) : 0); }
 function fixedPts(id) {
   if (id === 'full') return HOUSE === 'party' ? 40 : 25;
@@ -966,7 +967,10 @@ const multOf = (p, c) => p.cards.length > 1 ? c + 1 : 1;
 function playerOptions(p, d) {
   const list = [];
   p.cards.forEach((card, c) => {
-    if (CATS.every(x => card.s[x.id] != null)) return;
+    // Short games allow exactly seven *choices per column*, not thirteen.
+    // In Triple Gilded that means 21 turns, with no column selectable after
+    // its seventh box. This is shared verbatim with every phone via rules.js.
+    if (CATS.filter(x => card.s[x.id] != null).length >= (SHORT_GAME ? 7 : 13)) return;
     const o = turnOptions(card.s, d);
     o.allowed.forEach(cat => list.push({ key: c + ':' + cat, c, cat, val: rawScore(cat, d, o.joker), bonus: o.bonus, mult: multOf(p, c) }));
   });
@@ -1100,10 +1104,32 @@ const store = {
 };
 const prefs = Object.assign({ sound: true, fxVol: 0.9, ambOn: false, ambVol: 0.45, voiceOn: true, voiceVol: 1, voiceName: '',
   tv: false, quick: false, preset: 'family', gold: true, short: false, simultaneous: true, mirror: false, timer: 0, mode: 'classic', count: 2, seats: [], phones: false, phoneBots: [], house: true, chips: true, teams: false, replay: true, phoneHelp: {} }, store.get(K_PREFS, {}));
-for (let i = 0; i < 8; i++) prefs.seats[i] = Object.assign({ name: '', color: i, type: 'human', help: 'std' }, prefs.seats[i] || {});
+// Defensive settings recovery. A truncated or older localStorage value should
+// never prevent the game from opening on a family TV or phone.
+if (!Array.isArray(prefs.seats)) prefs.seats=[];
+if (!Array.isArray(prefs.phoneBots)) prefs.phoneBots=[];
+prefs.count=Number.isInteger(prefs.count)&&prefs.count>=1&&prefs.count<=8?prefs.count:2;
+if (!['classic','triple'].includes(prefs.mode)) prefs.mode='classic';
+if (!['classic','family','stakes'].includes(prefs.preset)) prefs.preset='family';
+for (let i = 0; i < 8; i++) prefs.seats[i] = Object.assign({ name: '', color: i, type: 'human', help: 'std' }, prefs.seats[i] && typeof prefs.seats[i]==='object' ? prefs.seats[i] : {});
+// Validate the shape of a saved match before either rendering or offering Resume.
+// Leave all valid save values unchanged, including existing two-player saves.
+function validGameState(v){
+  if(!v||v.v!==2||v.phase!=='play'||!['classic','triple'].includes(v.mode))return false;
+  if(!Number.isInteger(v.round)||v.round<1||v.round>(v.short?7:13)*(v.mode==='triple'?3:1))return false;
+  if(!Array.isArray(v.players)||v.players.length<1||v.players.length>8)return false;
+  if(!Number.isInteger(v.current)||v.current<0||v.current>=v.players.length)return false;
+  if(!Array.isArray(v.dice)||v.dice.length!==5||!Array.isArray(v.held)||v.held.length!==5)return false;
+  const n=v.mode==='triple'?3:1;
+  if(v.players.some(p=>!p||typeof p.name!=='string'||!Array.isArray(p.cards)||p.cards.length!==n||p.cards.some(c=>!c||!c.s||typeof c.s!=='object'||!CATS.every(cat=>Object.hasOwn(c.s,cat.id)))))return false;
+  if(v.sim?.on && (!['rolling','reveal','settled'].includes(v.sim.stage)||!Array.isArray(v.sim.turns)||v.sim.turns.length!==v.players.length))return false;
+  return true;
+}
 if (!prefs.phoneHelp || typeof prefs.phoneHelp !== 'object') prefs.phoneHelp = {};
 const savePrefs = () => store.set(K_PREFS, prefs);
 let profiles = store.get(K_PROF, []);
+if(!Array.isArray(profiles)) profiles=[];
+profiles=profiles.filter(p=>p&&typeof p.name==='string'&&p.name.trim()).slice(0,24);
 
 let S = null;  // game state (persisted)
 let phoneCall = false;
@@ -1537,7 +1563,7 @@ const botTurnNow = () => !!S && S.phase === 'play' && isBot(cur());
 /* a player may take a lucky roll once their normal rolls are used up */
 const canLucky = p => !!S && S.phase === 'play' && !isBot(p) && (p.tokens || 0) > 0 && S.rollNum > 0 && S.rollNum >= rollLimit(S);
 
-function renderAll() { if (!S) return; document.documentElement.classList.toggle('local-score',!Phones.active()); setGoldDie(S.gold !== false); setUpperTarget(S.short ? 30 : 63); setHouse(S.rule); document.documentElement.classList.toggle('triple', S.mode === 'triple'); if(isSim()&&S.phase==='play'){renderSimScreen();return;} document.documentElement.classList.remove('sim-mode');$('#simProgress').hidden=true;$('#btnRoll').hidden=false;$('#btnHint').hidden=false;$('#btnCard').hidden=false;$('#tray').parentElement.hidden=false;$('#rollPips').hidden=false;$('#scoreScroll').hidden=false;renderTop();renderTurn();renderDice();renderTable(); }
+function renderAll() { if (!S) return; document.documentElement.classList.toggle('local-score',!Phones.active()); setGoldDie(S.gold !== false); setUpperTarget(S.short ? 30 : 63); setShortGame(S.short); setHouse(S.rule); document.documentElement.classList.toggle('triple', S.mode === 'triple'); if(isSim()&&S.phase==='play'){renderSimScreen();return;} document.documentElement.classList.remove('sim-mode');$('#simProgress').hidden=true;$('#btnRoll').hidden=false;$('#btnHint').hidden=false;$('#btnCard').hidden=false;$('#tray').parentElement.hidden=false;$('#rollPips').hidden=false;$('#scoreScroll').hidden=false;renderTop();renderTurn();renderDice();renderTable(); }
 function renderTop() {
   $('#roundLabel').textContent = S.phase === 'play' ? `Turn ${S.round} of ${maxRounds()}` : 'Final scores';
   $('#btnUndo').hidden = !ui.undo;
@@ -1627,12 +1653,14 @@ function renderTable() {
     let r = `<tr><th scope="row"><span class="lab"><span>${c.label}</span><span class="pts${changed ? ' house' : ''}">${lbl}</span></span></th>`;
     cols.forEach(col => {
       const card = P[col.pi].cards[col.c], v = card.s[c.id], key = col.c + ':' + c.id;
+      const shortClosed=S.short && CATS.filter(k=>card.s[k.id]!=null).length>=7;
       let cls = actCls(col), body = '', attrs = '';
       if (v != null) {
         cls += ' filled' + (v === 0 ? ' zero' : '');
         if (ui.lastScored && ui.lastScored.p === col.pi && ui.lastScored.key === key) cls += ' pop';
         body = v;
-      } else if (col.pi === ci && showGhost) {
+      } else if(shortClosed){cls+=' blocked short-closed';body='–';}
+      else if (col.pi === ci && showGhost) {
         const o = omap.get(key);
         if (o) {
           const confirm = ui.pendingZero === key;
@@ -1646,11 +1674,11 @@ function renderTable() {
     return r + '</tr>';
   };
   UPPER.forEach(c => h += catRow(c));
-  h += '<tr class="sub"><th scope="row"><span class="lab"><span>Top total</span><span class="pts">/63</span></span></th>';
-  cols.forEach(col => { const t = T[col.pi].cols[col.c]; h += `<td class="prog${actCls(col)}" style="--p:${Math.min(100, Math.round(t.up / 63 * 100))}%">${t.up}</td>`; });
+  h += `<tr class="sub"><th scope="row"><span class="lab"><span>Top total</span><span class="pts">/${S.short?30:63}</span></span></th>`;
+  cols.forEach(col => { const t = T[col.pi].cols[col.c]; h += `<td class="prog${actCls(col)}" style="--p:${Math.min(100, Math.round(t.up / (S.short?30:63) * 100))}%">${t.up}</td>`; });
   h += '</tr><tr class="sub"><th scope="row"><span class="lab"><span>Bonus</span><span class="pts">35</span></span></th>';
   cols.forEach(col => {
-    const card = P[col.pi].cards[col.c], t = T[col.pi].cols[col.c], upDone = UPPER.every(c => card.s[c.id] != null);
+    const card = P[col.pi].cards[col.c], t = T[col.pi].cols[col.c], upDone = UPPER.every(c => card.s[c.id] != null)||(S.short&&CATS.filter(c=>card.s[c.id]!=null).length>=7);
     h += `<td class="${(t.bonus ? 'earned' : '') + actCls(col)}">${t.bonus ? '+35' : upDone ? '0' : '·'}</td>`;
   });
   h += '</tr><tr class="gap"><th scope="row"></th>' + cols.map(() => '<td></td>').join('') + '</tr>';
@@ -1950,7 +1978,7 @@ setInterval(simTick,650);
 /* ================= game flow ================= */
 function blankCard() { return { s: Object.fromEntries(CATS.map(c => [c.id, null])), yb: 0 }; }
 function newGame(seats, mode, houseOn, teams) {
-  setGoldDie(prefs.gold !== false); setUpperTarget(prefs.short ? 30 : 63);
+  setGoldDie(prefs.gold !== false); setUpperTarget(prefs.short ? 30 : 63); setShortGame(prefs.short);
   const ncols = mode === 'triple' ? 3 : 1;
   const mk = s => {
     const help = s.type === 'human' && HELP[s.help] ? s.help : 'std', h = HELP[help];
@@ -2501,7 +2529,7 @@ function showHint() {
 /* ================= results & records ================= */
 const ord = n => n + (n % 10 === 1 && n % 100 !== 11 ? 'st' : n % 10 === 2 && n % 100 !== 12 ? 'nd' : n % 10 === 3 && n % 100 !== 13 ? 'rd' : 'th');
 const nameKey = n => String(n).trim().toLowerCase();
-function getRecords() { const r = store.get(K_REC, { games: [] }); if (!Array.isArray(r.games)) r.games = []; return r; }
+function getRecords() { const data=store.get(K_REC, null); const r=data&&typeof data==='object'&&!Array.isArray(data)?data:{games:[]}; if(!Array.isArray(r.games))r.games=[];return r; }
 function recordGame(rows) {
   const rec = getRecords();
   const others = rec.games.filter(g => g.id !== S.id);
@@ -2525,6 +2553,7 @@ function recordGame(rows) {
   return { pb, houseRecord };
 }
 function showResults() {
+  if(!S||S.phase!=='over')return; // ignore a delayed result animation after a rematch
   botToken++;
   finalCashIn();
   const rows = S.players.map((p, i) => ({ p, i, t: totals(p) })).sort((a, b) => b.t.grand - a.t.grand);
@@ -2625,16 +2654,32 @@ function openRecords() {
 }
 
 /* ================= overlays & setup ================= */
-const openOv = id => { $('#' + id).hidden = false; if (id === 'setup') Phones.queue(); };
-const closeOv = id => { $('#' + id).hidden = true; if (id === 'setup') Phones.queue(); };
+// Keep keyboard and screen-reader focus within the open dialog. Restore the
+// invoking control on close, so a keyboard user never loses their place.
+const overlayFocus=new Map();
+const overlayTabs=o=>[...o.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])')].filter(e=>e.getClientRects().length>0);
+const openOv = id => {
+  const o=$('#'+id);if(o.hidden)overlayFocus.set(id,document.activeElement);
+  o.hidden=false;
+  const first=overlayTabs(o)[0];if(first)first.focus({preventScroll:true});
+  if(id==='setup')Phones.queue();
+};
+const closeOv = id => {
+  const o=$('#'+id);if(o.hidden)return;
+  const contained=o.contains(document.activeElement);
+  o.hidden=true;
+  const prev=overlayFocus.get(id);overlayFocus.delete(id);
+  if(contained&&prev?.isConnected&&!prev.closest('[hidden]'))prev.focus({preventScroll:true});
+  if(id==='setup')Phones.queue();
+};
 const anyOverlay = () => $$('.overlay').some(o => !o.hidden);
 
 function openSetup() {
   botToken++;
   const saved = store.get(K_GAME, null);
-  const canResume = saved && saved.v === 2 && saved.phase === 'play' && Array.isArray(saved.players) && saved.players.length;
+  const canResume = validGameState(saved);
   $('#resumeBox').hidden = !canResume;
-  if (canResume) $('#resumeInfo').textContent = `${saved.players.map(p => p.name).join(', ')} · round ${saved.round} of ${13 * saved.ncols}`;
+  if (canResume) $('#resumeInfo').textContent = `${saved.players.map(p => p.name).join(', ')} · ${saved.sim?.on?'round':'turn'} ${saved.round} of ${(saved.short?7:13)*(saved.ncols||1)}`;
   ['gold','short','simultaneous','mirror'].forEach((k,i)=>$('#'+['optGold','optShort','optSim','optMirror'][i]).checked=!!prefs[k]);
   $('#optTimer').value=String(prefs.timer||0);
   if(prefs.preset==='family'){prefs.chips=false;prefs.house=true;}
@@ -2646,8 +2691,8 @@ function openSetup() {
 function renderSetup() {
   $$('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === prefs.mode ? 'true' : 'false'));
   $('#modeInfo').textContent = prefs.mode === 'triple'
-    ? 'Three score columns each, worth ×1, ×2 and ×3. 39 rounds — a longer, bigger-scoring game.'
-    : 'The standard game: 13 rounds, one score column each.';
+    ? `Three score columns worth ×1, ×2 and ×3. ${prefs.short?'21':'39'} turns altogether.`
+    : `${prefs.short?'Short game: 7 turns, choose any 7 boxes; upper bonus at 30.':'Full game: 13 turns, one score column; upper bonus at 63.'}`;
   const c = $('#counts'); c.innerHTML = '';
   for (let n = 1; n <= 8; n++) {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'count-btn'; b.textContent = n;
@@ -2711,6 +2756,7 @@ $('#regs').addEventListener('click', e => {
   Sound.ui(); renderSetup();
 });
 $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (!b) return; prefs.mode = b.dataset.mode; Sound.unlock(); Sound.ui(); renderSetup(); });
+$('#optShort').addEventListener('change',e=>{prefs.short=e.target.checked;renderSetup();});
 $('#optHouse').onchange = e => { prefs.house = e.target.checked; savePrefs(); Sound.ui(); };
 $('#optChips').onchange = e => { prefs.chips = e.target.checked; savePrefs(); Sound.ui(); };
 $('#optTeams').onchange = e => { prefs.teams = e.target.checked; savePrefs(); Sound.ui(); renderTeams(); Phones.queue(); };
@@ -2764,7 +2810,7 @@ $('#btnStart').onclick = () => {
   startGame(seats, prefs.mode);
 };
 $('#btnResume').onclick = () => {
-  const saved = store.get(K_GAME, null); if (!saved) return;
+  const saved=store.get(K_GAME,null);if(!validGameState(saved)){toast('This saved game cannot be resumed.');return;}
   applySetupToggles();
   S = saved; resetUi(); setHouse(S.rule);
   closeOv('setup'); renderAll(); syncDiceInstant();
@@ -2911,11 +2957,22 @@ function moveCursor(dir) {
   const el = table.querySelector('td.cursor'); if (el) el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
 document.addEventListener('keydown', e => {
-  if (e.target.matches && e.target.matches('input,select')) return;
-  if (anyOverlay()) {
-    if (e.key === 'Escape') ['cast', 'rules', 'settings', 'records', 'menu', 'phonesOv'].some(id => { if (!$('#' + id).hidden) { closeOv(id); return true; } return false; });
+  if(anyOverlay()){
+    if(e.key==='Escape'){
+      const closable=['cast','rules','settings','records','menu','phonesOv'].find(id=>!$('#'+id).hidden);
+      if(closable){e.preventDefault();closeOv(closable);}return;
+    }
+    if(e.key==='Tab'){
+      const visible=[...$$('.overlay')].filter(o=>!o.hidden);
+      const dialog=visible.at(-1), els=overlayTabs(dialog);
+      if(!els.length){e.preventDefault();return;}
+      const first=els[0],last=els.at(-1);
+      if(e.shiftKey&&(document.activeElement===first||!dialog.contains(document.activeElement))){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&(document.activeElement===last||!dialog.contains(document.activeElement))){e.preventDefault();first.focus();}
+    }
     return;
   }
+  if(e.target.matches&&e.target.matches('input,select,textarea'))return;
   if (!S || S.phase !== 'play') return;
   const k = e.key;
   if (k === ' ' || k === 'r' || k === 'R') { if (e.target.closest && e.target.closest('td[data-key]')) return; e.preventDefault(); roll(false); }
@@ -3221,9 +3278,10 @@ syncSoundBtn();
 applyLayout();
 renderVoicePick();
 const savedGame = store.get(K_GAME, null);
-if (savedGame && savedGame.v === 2 && savedGame.phase === 'play') { S = savedGame; setGoldDie(S.gold!==false); setUpperTarget(S.short?30:63); setHouse(S.rule); renderAll(); syncDiceInstant();  }
+if(validGameState(savedGame)) { S = savedGame; setGoldDie(S.gold!==false); setUpperTarget(S.short?30:63); setHouse(S.rule); renderAll(); syncDiceInstant();  }
 else { S = newGame([{ name: 'Seat 1', color: 0, type: 'human' }], 'classic'); renderAll(); syncDiceInstant(); S = null; }
 openSetup();
+if(savedGame&&!validGameState(savedGame))toast('Previous saved game was damaged. Starting fresh.');
 Phones.probe();
 })();
 </script>
